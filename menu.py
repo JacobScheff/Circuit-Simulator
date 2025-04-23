@@ -10,18 +10,22 @@ class Menu:
         self.font = pygame.font.Font(None, 36)
 
     def draw(self):
+        background_color = (120, 120, 120)
+        text_color = (255, 255, 255)
+        text_to_border_padding = 5
+        text_line_spacing = 40
+        max_text_x = -99999
+
         for i, option in enumerate(self.options):
-            background_color = (120, 120, 120)
-            text_color = (255, 255, 255)
-            text_to_border_padding = 5
-            text_line_spacing = 40
             text_surface = self.font.render(option, True, text_color)
-            max_text_x = -99999
-            for option in self.options:
-                text_rect = text_surface.get_rect(center=(self.position[0] + text_to_border_padding, self.position[1] + i * text_line_spacing))
-                max_text_x = max(max_text_x, text_rect.width)
-            text_rect = text_surface.get_rect(center=(self.position[0] + max_text_x / 2, self.position[1] + i * text_line_spacing))
-            # Draw background rectangle
-            pygame.draw.rect(self.screen, background_color, text_rect.inflate(text_to_border_padding * 2, text_to_border_padding * 2))
+            text_rect = text_surface.get_rect(center=(self.position[0] + text_to_border_padding, self.position[1] + i * text_line_spacing))
+            size_x = text_surface.get_size()[0]
+            max_text_x = max(max_text_x, size_x)
+            text_rect = text_surface.get_rect(center=(self.position[0] + size_x / 2, self.position[1] + i * text_line_spacing))
+
             # Draw text
             self.screen.blit(text_surface, text_rect)
+
+        # Draw background behind entire menu
+        # menu_rect = pygame.Rect(self.position[0] - text_to_border_padding, self.position[1] - text_to_border_padding, max_text_x + text_to_border_padding, len(self.options) * text_line_spacing + text_to_border_padding)
+        # pygame.draw.rect(self.screen, background_color, menu_rect)
