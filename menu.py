@@ -14,7 +14,7 @@ class Menu:
             background_color = (120, 120, 120)
             text_color = (255, 255, 255)
             text_to_border_padding = 5
-            text_line_spacing = 5
+            text_line_spacing = 40
             text_surface = self.font.render(option, True, text_color)
             max_text_x = -99999
             for option in self.options:
