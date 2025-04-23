@@ -5,9 +5,9 @@ class Menu:
     def __init__(self, screen, position, options):
         self.screen = screen
         self.position = position
-        # self.options
-        self.options = ["Start Simulation", "Load Circuit", "Exit"]
+        self.options = options
         self.selected_option = 0
+        self.font = pygame.font.Font(None, 36)
 
     def draw(self):
         for i, option in enumerate(self.options):
