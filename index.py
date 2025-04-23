@@ -1,4 +1,5 @@
 import pygame
+import math
 
 SCREEN_SIZE = (1200, 600)
 
