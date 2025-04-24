@@ -1,6 +1,7 @@
 import pygame
 import math
 from menu import Menu
+from input import Input
 
 SCREEN_SIZE = (1200, 600)
 
@@ -12,14 +13,7 @@ FPS = 60
 running = True
 
 menus = []
-
-def start():
-    print("User pressed start")
-def load():
-    print("User pressed load")
-def exit():
-    print("User pressed exit")
-    return True
+inputs = []
 
 while running:
     for event in pygame.event.get():
@@ -29,7 +23,7 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
                 mouse_pos = pygame.mouse.get_pos()
-                menus.append(Menu(screen, mouse_pos, ["Start Simulation", "Load Circuit", "Exit"], [start, load, exit]))
+                inputs.append(Input(screen, mouse_pos, 0))
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             mos_pos = pygame.mouse.get_pos()
@@ -42,11 +36,20 @@ while running:
                         menus.remove(menu)
                         break
 
+            # Handle input clicks
+            for input in inputs:
+                if event.button == 1:
+                    input.handle_click(mos_pos)
+
     screen.fill((0, 0, 0))
 
     # Draw the menus
     for menu in menus:
         menu.draw()
+    
+    # Draw the inputs
+    for input in inputs:
+        input.draw()
 
     pygame.display.flip()
     clock.tick(FPS)
