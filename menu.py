@@ -2,10 +2,11 @@ import pygame
 import math
 
 class Menu:
-    def __init__(self, screen, position, options):
+    def __init__(self, screen, position, options, callbacks):
         self.screen = screen
         self.position = position
         self.options = options
+        self.callbacks = callbacks
         self.font = pygame.font.Font(None, 36)
 
         self.background_color = (120, 120, 120)
@@ -44,3 +45,11 @@ class Menu:
                 # Highlight the text if the mouse is over it
                 text_surface = self.font.render(self.options[i], True, (150, 150, 150))
             self.screen.blit(text_surface, text_rect)
+
+    def handle_click(self, mouse_pos):
+        for i, text_rect in enumerate(self.text_rects):
+            if text_rect.collidepoint(mouse_pos):
+                # Call the corresponding callback function
+                if self.callbacks[i] is not None:
+                    self.callbacks[i]()
+                break
