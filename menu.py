@@ -30,12 +30,12 @@ class Menu:
             self.text_rects.append(text_rect)
 
     def draw(self):
+        # Draw background behind entire menu
+        menu_rect = pygame.Rect(self.position[0] - self.text_to_border_padding, self.position[1] - self.text_to_border_padding - self.text_line_spacing / 2, self.max_text_x + self.text_to_border_padding * 2, len(self.options) * self.text_line_spacing + self.text_to_border_padding * 2)
+        pygame.draw.rect(self.screen, self.background_color, menu_rect, border_radius=10)
+
         # Draw the text
         for i in range(len(self.text_rects)):
             text_rect = self.text_rects[i]
             text_surface = self.text_surfaces[i]
             self.screen.blit(text_surface, text_rect)
-
-        # Draw background behind entire menu
-        # menu_rect = pygame.Rect(self.position[0] - text_to_border_padding, self.position[1] - text_to_border_padding, max_text_x + text_to_border_padding, len(self.options) * text_line_spacing + text_to_border_padding)
-        # pygame.draw.rect(self.screen, background_color, menu_rect)
