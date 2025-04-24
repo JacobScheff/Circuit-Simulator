@@ -14,6 +14,12 @@ class Input:
         color = (255, 255, 255) if self.state == 1 else (100, 100, 100)
         pygame.draw.rect(self.screen, color, self.rect)
 
+        # Draw the text
+        font = pygame.font.Font(None, 18)
+        text = font.render(str(self.state), True, (0, 0, 0) if self.state == 1 else (255, 255, 255))
+        text_rect = text.get_rect(center=self.rect.center)
+        self.screen.blit(text, text_rect)
+
     def handle_click(self, mouse_pos):
         # Check if the input box is clicked
         if self.rect.collidepoint(mouse_pos):
