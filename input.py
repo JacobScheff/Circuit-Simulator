@@ -15,7 +15,7 @@ class Input:
         pygame.draw.rect(self.screen, color, self.rect)
 
         # Draw the text
-        font = pygame.font.Font(None, 18)
+        font = pygame.font.Font(None, 22)
         text = font.render(str(self.state), True, (0, 0, 0) if self.state == 1 else (255, 255, 255))
         text_rect = text.get_rect(center=self.rect.center)
         self.screen.blit(text, text_rect)
