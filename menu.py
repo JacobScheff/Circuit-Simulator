@@ -22,10 +22,12 @@ class Menu:
             text_surface = self.font.render(option, True, self.text_color)
             surface_size = text_surface.get_size()
             self.max_text_x = max(self.max_text_x, surface_size[0])
-            text_rect = text_surface.get_rect(center=(self.position[0] + surface_size[0] / 2, self.position[1] + i * self.text_line_spacing))
             self.text_surfaces.append(text_surface)
+
+        # Precalculate text rects
+        for i, option in enumerate(self.options):
+            text_rect = self.text_surfaces[i].get_rect(center=(self.position[0] + self.max_text_x / 2, self.position[1] + i * self.text_line_spacing))
             self.text_rects.append(text_rect)
-            
 
     def draw(self):
         # Draw the text
