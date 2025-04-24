@@ -19,19 +19,28 @@ def load():
     print("User pressed load")
 def exit():
     print("User pressed exit")
-menus.append(Menu(screen, (500, 200), ["Start Simulation", "Load Circuit", "Exit"], [start, load, exit]))
+    return True
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w:
+                mouse_pos = pygame.mouse.get_pos()
+                menus.append(Menu(screen, mouse_pos, ["Start Simulation", "Load Circuit", "Exit"], [start, load, exit]))
+        
         if event.type == pygame.MOUSEBUTTONDOWN:
             mos_pos = pygame.mouse.get_pos()
 
             # Handle menu clicks
             for menu in menus:
                 if event.button == 1:
-                    menu.handle_click(mos_pos)
+                    # If handle_click returns True, close the menu
+                    if menu.handle_click(mos_pos):
+                        menus.remove(menu)
+                        break
 
     screen.fill((0, 0, 0))
 

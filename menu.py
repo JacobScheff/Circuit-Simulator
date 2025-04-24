@@ -46,10 +46,11 @@ class Menu:
                 text_surface = self.font.render(self.options[i], True, (150, 150, 150))
             self.screen.blit(text_surface, text_rect)
 
+    # Returns True if menu should close
     def handle_click(self, mouse_pos):
         for i, text_rect in enumerate(self.text_rects):
             if text_rect.collidepoint(mouse_pos):
                 # Call the corresponding callback function
                 if self.callbacks[i] is not None:
-                    self.callbacks[i]()
+                    return self.callbacks[i]()
                 break
