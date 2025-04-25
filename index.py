@@ -18,7 +18,7 @@ menus = []
 inputs = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100), 0, True)]
+sample_elements = [Input(screen, (100, 100), 0)]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():
@@ -41,19 +41,22 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Left mouse button clicked
             if event.button == 1:
+                something_clicked = False
                 # Handle menu
                 for menu in menus:
                     # If handle_click returns True, close the menu
                     if menu.handle_click(mos_pos):
+                        something_clicked = True
                         menus.remove(menu)
                         break
 
                 # Handle input
                 for input in inputs:
-                    input.handle_click(mos_pos)
+                    something_clicked = input.handle_click(mos_pos) or something_clicked
 
                 # Handle new element button
                 if new_element_button.collidepoint(mos_pos):
+                    something_clicked = True
                     def input_selected():
                         global adding_element
                         adding_element = 0
@@ -63,6 +66,18 @@ while running:
 
                 # Close menus if clicked outside of them
                 auto_close_menus_from_click()
+
+                # If nothing was clicked, and adding_element is not -1, create a new element
+                if not something_clicked and adding_element >= 0:
+                    # Create a new element
+                    # TODO: Create deep copy of sample_element (including copying the objects it stores inside) instead of copying reference
+                    print("TODO!!!!!!!!!!!!!!")
+                    new_element = sample_elements[adding_element]
+                    new_element.set_pos(mos_pos)
+                    inputs.append(new_element)
+
+                    # Reset adding_element
+                    adding_element = -1
 
             # Right mouse button clicked (context menu)
             elif event.button == 3:
@@ -99,8 +114,8 @@ while running:
     # Draw the selected element at mos_pos
     if adding_element >= 0:
         element = sample_elements[adding_element]
-        element.pos = mos_pos
-        element.draw(mos_pos)
+        element.set_pos(mos_pos)
+        element.draw()
 
     pygame.display.flip()
     clock.tick(FPS)
