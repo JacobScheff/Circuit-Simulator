@@ -63,14 +63,14 @@ while running:
                 auto_close_menus_from_click()
 
     screen.fill((0, 0, 0))
-
-    # Draw the menus
-    for menu in menus:
-        menu.draw()
     
     # Draw the inputs
     for input in inputs:
         input.draw()
+
+    # Draw the menus
+    for menu in menus:
+        menu.draw()
 
     pygame.display.flip()
     clock.tick(FPS)
