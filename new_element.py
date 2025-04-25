@@ -21,7 +21,3 @@ class NewElementButton:
         if math.sqrt((mouse_pos[0] - self.pos[0]) ** 2 + (mouse_pos[1] - self.pos[1]) ** 2) <= self.radius:
             return True
         return False
-
-    def handle_menu_create(self, mouse_pos):
-        menu = Menu(self.screen, mouse_pos, [], [None])
-        return menu

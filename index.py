@@ -18,12 +18,17 @@ menus = []
 inputs = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
+sample_elements = [Input(screen, (100, 100), 0)]
+adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
+
 def auto_close_menus_from_click():
     for menu in menus:
         if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
             menus.remove(menu)
 
 while running:
+    mos_pos = pygame.mouse.get_pos()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -34,8 +39,6 @@ while running:
                 inputs.append(Input(screen, mouse_pos, 0))
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            mos_pos = pygame.mouse.get_pos()
-
             # Left mouse button clicked
             if event.button == 1:
                 # Handle menu
@@ -51,10 +54,12 @@ while running:
 
                 # Handle new element button
                 if new_element_button.collidepoint(mos_pos):
-                    menu = new_element_button.handle_menu_create(mos_pos)
-                    if menu is not None:
-                        menus.append(menu)
-                    break
+                    def input_selected():
+                        global adding_element
+                        adding_element = 0
+                        return True
+                    menu = Menu(screen, mos_pos, ["Input"], [input_selected])
+                    menus.append(menu)
 
                 # Close menus if clicked outside of them
                 auto_close_menus_from_click()
@@ -90,6 +95,12 @@ while running:
     # Draw the menus
     for menu in menus:
         menu.draw()
+
+    # Draw the selected element at mos_pos
+    if adding_element >= 0:
+        element = sample_elements[adding_element]
+        element.pos = mos_pos
+        element.draw(mos_pos)
 
     pygame.display.flip()
     clock.tick(FPS)
