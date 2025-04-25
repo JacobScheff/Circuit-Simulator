@@ -9,6 +9,7 @@ class Input:
         self.state = state
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
+        self.deleted = False # Whether to delete the input box next frame
 
     def draw(self):
         # Draw the input box
@@ -31,7 +32,7 @@ class Input:
         # Check if the input box is clicked
         if self.rect.collidepoint(mouse_pos):
             def delete_input():
-                print("Delete input")
+                self.deleted = True
                 return True # Close the menu after deleting the input
             
             menu = Menu(self.screen, mouse_pos, ["Delete"], [delete_input])

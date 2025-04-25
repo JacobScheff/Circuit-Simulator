@@ -62,6 +62,12 @@ while running:
                 # Close menus if clicked outside of them
                 auto_close_menus_from_click()
 
+    # Remove deleted elements
+    for input in inputs:
+        if input.deleted:
+            inputs.remove(input)
+            break
+
     screen.fill((0, 0, 0))
     
     # Draw the inputs
