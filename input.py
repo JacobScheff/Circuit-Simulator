@@ -17,7 +17,6 @@ class Input:
         if self.is_sample_element:
             self.rect.x = mos_pos[0] - self.rect.width / 2
             self.rect.y = mos_pos[1] - self.rect.height / 2
-            self.rect.center = (mos_pos[0], mos_pos[1])
 
         # Draw the input box
         color = (255, 255, 255) if self.state == 1 else (100, 100, 100)

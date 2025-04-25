@@ -18,7 +18,7 @@ menus = []
 inputs = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100), 0)]
+sample_elements = [Input(screen, (100, 100), 0, True)]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():
