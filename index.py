@@ -1,6 +1,7 @@
 import pygame
 import math
 from menu import Menu
+from new_element import NewElementButton
 from input import Input
 from wire import Wire
 
@@ -15,6 +16,7 @@ running = True
 
 menus = []
 inputs = []
+new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
 def auto_close_menus_from_click():
     for menu in menus:
@@ -47,6 +49,13 @@ while running:
                 for input in inputs:
                     input.handle_click(mos_pos)
 
+                # Handle new element button
+                if new_element_button.collidepoint(mos_pos):
+                    menu = new_element_button.handle_menu_create(mos_pos)
+                    if menu is not None:
+                        menus.append(menu)
+                    break
+
                 # Close menus if clicked outside of them
                 auto_close_menus_from_click()
 
@@ -74,6 +83,9 @@ while running:
     # Draw the inputs
     for input in inputs:
         input.draw()
+
+    # Draw the new element button
+    new_element_button.draw()
 
     # Draw the menus
     for menu in menus:
