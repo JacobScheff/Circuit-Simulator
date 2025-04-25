@@ -1,5 +1,6 @@
 import pygame
 import math
+from menu import Menu
 
 class Input:
     def __init__(self, screen, pos, state):
@@ -25,3 +26,13 @@ class Input:
         if self.rect.collidepoint(mouse_pos):
             # Toggle the state
             self.state = 1 - self.state
+
+    def handle_menu_create(self, mouse_pos):
+        # Check if the input box is clicked
+        if self.rect.collidepoint(mouse_pos):
+            def delete_input():
+                print("Delete input")
+                return True # Close the menu after deleting the input
+            
+            menu = Menu(self.screen, mouse_pos, ["Delete"], [delete_input])
+            return menu

@@ -2,12 +2,13 @@ import pygame
 import math
 
 class Menu:
-    def __init__(self, screen, position, options, callbacks):
+    def __init__(self, screen, position, options, callbacks, close_on_click=True):
         self.screen = screen
         self.position = position
         self.options = options
         self.callbacks = callbacks
         self.font = pygame.font.Font(None, 36)
+        self.close_on_click = close_on_click # Whether to close the menu when something other than the menu is clicked
 
         self.background_color = (120, 120, 120)
         self.text_color = (255, 255, 255)
@@ -29,10 +30,11 @@ class Menu:
             text_rect = self.text_surfaces[i].get_rect(center=(self.position[0] + self.max_text_x / 2, self.position[1] + i * self.text_line_spacing))
             self.text_rects.append(text_rect)
 
+        self.bg_rect = pygame.Rect(self.position[0] - self.text_to_border_padding, self.position[1] - self.text_to_border_padding - self.text_line_spacing / 2, self.max_text_x + self.text_to_border_padding * 2, len(self.options) * self.text_line_spacing + self.text_to_border_padding * 2)
+
     def draw(self):
         # Draw background behind entire menu
-        menu_rect = pygame.Rect(self.position[0] - self.text_to_border_padding, self.position[1] - self.text_to_border_padding - self.text_line_spacing / 2, self.max_text_x + self.text_to_border_padding * 2, len(self.options) * self.text_line_spacing + self.text_to_border_padding * 2)
-        pygame.draw.rect(self.screen, self.background_color, menu_rect, border_radius=10)
+        pygame.draw.rect(self.screen, self.background_color, self.bg_rect, border_radius=10)
 
         # Get mouse pos
         mouse_pos = pygame.mouse.get_pos()

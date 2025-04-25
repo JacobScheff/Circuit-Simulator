@@ -28,18 +28,38 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mos_pos = pygame.mouse.get_pos()
 
-            # Handle menu clicks
-            for menu in menus:
-                if event.button == 1:
+            # Left mouse button clicked
+            if event.button == 1:
+                # Handle menu
+                for menu in menus:
                     # If handle_click returns True, close the menu
                     if menu.handle_click(mos_pos):
                         menus.remove(menu)
                         break
 
-            # Handle input clicks
-            for input in inputs:
-                if event.button == 1:
+                # Handle input
+                for input in inputs:
                     input.handle_click(mos_pos)
+
+                # Close menus if clicked outside of them
+                for menu in menus:
+                    if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
+                        menus.remove(menu)
+
+            # Right mouse button clicked (context menu)
+            elif event.button == 3:
+                # Handle input
+                for input in inputs:
+                    if input.rect.collidepoint(mos_pos):
+                        menu = input.handle_menu_create(mos_pos)
+                        if menu is not None:
+                            menus.append(menu)
+                        break
+                
+                # Close menus if clicked outside of them
+                for menu in menus:
+                    if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
+                        menus.remove(menu)
 
     screen.fill((0, 0, 0))
 
