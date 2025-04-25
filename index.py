@@ -15,6 +15,11 @@ running = True
 menus = []
 inputs = []
 
+def auto_close_menus_from_click():
+    for menu in menus:
+        if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
+            menus.remove(menu)
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -42,9 +47,7 @@ while running:
                     input.handle_click(mos_pos)
 
                 # Close menus if clicked outside of them
-                for menu in menus:
-                    if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
-                        menus.remove(menu)
+                auto_close_menus_from_click()
 
             # Right mouse button clicked (context menu)
             elif event.button == 3:
@@ -57,9 +60,7 @@ while running:
                         break
                 
                 # Close menus if clicked outside of them
-                for menu in menus:
-                    if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
-                        menus.remove(menu)
+                auto_close_menus_from_click()
 
     screen.fill((0, 0, 0))
 
