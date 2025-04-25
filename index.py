@@ -2,6 +2,7 @@ import pygame
 import math
 from menu import Menu
 from input import Input
+from wire import Wire
 
 SCREEN_SIZE = (1200, 600)
 
