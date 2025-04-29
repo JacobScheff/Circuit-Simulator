@@ -140,7 +140,7 @@ while running:
                         # Determine if any wires are connected
                         connectors = element.wire_connectors
                         for i in range(len(connectors)):
-                            if connectors[i].collidepoint(mos_pos) and not wire_conncted:
+                            if not wire_conncted and math.hypot(connectors[i][0] - mos_pos[0], connectors[i][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                 wire_conncted = True
                                 wire_connectors_selected.append((input, i))
 
@@ -185,6 +185,10 @@ while running:
     # Draw the lights
     for light in lights:
         light.draw()
+
+    # Draw the selected wire connectors
+    for wire_connector in wire_connectors_selected:
+        pygame.draw.circle(screen, (255, 0, 0), wire_connector[0].wire_connectors[wire_connector[1]], WIRE_CONNECOR_RADIUS)
 
     # Draw the new element button
     new_element_button.draw()
