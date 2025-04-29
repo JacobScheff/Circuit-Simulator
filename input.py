@@ -9,7 +9,7 @@ class Input:
         self.state = state
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
-        self.wire_connector = (pos[0] + size[0] / 2, pos[1] - size[1] / 2)
+        self.wire_connector = (pos[0] + size[0] / 2, pos[1])
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
@@ -30,6 +30,7 @@ class Input:
         # Set the position of the input box
         self.rect.x = pos[0] - self.rect.width / 2
         self.rect.y = pos[1] - self.rect.height / 2
+        self.wire_connector = (pos[0] + self.rect.width / 2, pos[1])
 
     # Return True if the input box was clicked
     def handle_click(self, mouse_pos):
