@@ -78,6 +78,7 @@ while running:
                     if new_element_button.collidepoint(mos_pos):
                         something_clicked = True
                         def wire_selected():
+                            global adding_wire
                             adding_wire = True
                             return True
                         def input_selected():
@@ -131,6 +132,7 @@ while running:
                 if event.button == 1:
                     # Handle wire creation
                     def check_wire_connects(element):
+                        global wire_conncted
                         # Check if wire was already connected
                         if wire_conncted:
                             return
@@ -151,7 +153,7 @@ while running:
                         
                     if wire_conncted and len(wire_connectors_selected) >= 2:
                         wires.append(Wire(screen, wire_connectors_selected[0][0], wire_connectors_selected[0][1], wire_connectors_selected[1][0], wire_connectors_selected[1][1]))
-                        wire_connectors_selected.clear()
+                        wire_connectors_selected.clear() # TODO: .clear() is likely resetting the reference to the element in the wire
                         adding_wire = False
 
     # Remove deleted elements
