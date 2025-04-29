@@ -13,8 +13,10 @@ pygame.display.set_caption("Circuit Simualtor")
 clock = pygame.time.Clock()
 running = True
 adding_wire = False
+wire_connectors_selected = []
 
 menus = []
+wires = []
 inputs = []
 lights = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
@@ -47,78 +49,108 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 menus.clear()
                 adding_element = -1
+                adding_wire = False
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Left mouse button clicked
-            if event.button == 1:
-                something_clicked = False
-                # Handle menu
-                for menu in menus:
-                    # If handle_click returns True, close the menu
-                    if menu.handle_click(mos_pos):
+
+            # Not adding a wire
+            if not adding_wire:
+                # Left mouse button clicked
+                if event.button == 1:
+                    something_clicked = False
+                    # Handle menu
+                    for menu in menus:
+                        # If handle_click returns True, close the menu
+                        if menu.handle_click(mos_pos):
+                            something_clicked = True
+                            menus.remove(menu)
+                            break
+
+                    # Handle input
+                    for input in inputs:
+                        something_clicked = input.handle_click(mos_pos) or something_clicked
+
+                    # Handle light
+                    for light in lights:
+                        something_clicked = light.handle_click(mos_pos) or something_clicked
+
+                    # Handle new element button
+                    if new_element_button.collidepoint(mos_pos):
                         something_clicked = True
-                        menus.remove(menu)
-                        break
+                        def wire_selected():
+                            adding_wire = True
+                            return True
+                        def input_selected():
+                            global adding_element
+                            adding_element = 0
+                            return True
+                        def light_selected():
+                            global adding_element
+                            adding_element = 1
+                            return True
+                        menu = Menu(screen, mos_pos, ["Wire", "Input", "Light"], [wire_selected, input_selected, light_selected])
+                        menus.append(menu)
 
-                # Handle input
-                for input in inputs:
-                    something_clicked = input.handle_click(mos_pos) or something_clicked
+                    # Close menus if clicked outside of them
+                    auto_close_menus_from_click()
 
-                # Handle light
-                for light in lights:
-                    something_clicked = light.handle_click(mos_pos) or something_clicked
+                    # If nothing was clicked, and adding_element is not -1, create a new element
+                    if not something_clicked and adding_element >= 0:
+                        # Create a new element
+                        new_element = sample_elements[adding_element].create_new_element(mos_pos)
+                        if adding_element == 0:
+                            inputs.append(new_element)
+                        elif adding_element == 1:
+                            lights.append(new_element)
 
-                # Handle new element button
-                if new_element_button.collidepoint(mos_pos):
-                    something_clicked = True
-                    def wire_selected():
-                        adding_wire = True
-                        return True
-                    def input_selected():
-                        global adding_element
-                        adding_element = 0
-                        return True
-                    def light_selected():
-                        global adding_element
-                        adding_element = 1
-                        return True
-                    menu = Menu(screen, mos_pos, ["Wire", "Input", "Light"], [wire_selected, input_selected, light_selected])
-                    menus.append(menu)
+                        # Reset adding_element
+                        adding_element = -1
 
-                # Close menus if clicked outside of them
-                auto_close_menus_from_click()
+                # Right mouse button clicked (context menu)
+                elif event.button == 3:
+                    # Handle input
+                    for input in inputs:
+                        if input.rect.collidepoint(mos_pos):
+                            menu = input.handle_menu_create(mos_pos)
+                            if menu is not None:
+                                menus.append(menu)
+                            break
+                    # Handle light
+                    for light in lights:
+                        if light.handle_click(mos_pos):
+                            menu = light.handle_menu_create(mos_pos)
+                            if menu is not None:
+                                menus.append(menu)
+                            break
+                        
+                    # Close menus if clicked outside of them
+                    auto_close_menus_from_click()
+            else:
+                wire_conncted = False
+                # Left mouse button clicked
+                if event.button == 1:
+                    # Handle wire creation
+                    def check_wire_connects(element):
+                        # Check if wire was already connected
+                        if wire_conncted:
+                            return
+                        
+                        # Determine if any wires are connected
+                        connectors = element.wire_connectors
+                        for i in range(len(connectors)):
+                            if connectors[i].collidepoint(mos_pos) and not wire_conncted:
+                                wire_conncted = True
+                                wire_connectors_selected.append((input, i))
 
-                # If nothing was clicked, and adding_element is not -1, create a new element
-                if not something_clicked and adding_element >= 0:
-                    # Create a new element
-                    new_element = sample_elements[adding_element].create_new_element(mos_pos)
-                    if adding_element == 0:
-                        inputs.append(new_element)
-                    elif adding_element == 1:
-                        lights.append(new_element)
-
-                    # Reset adding_element
-                    adding_element = -1
-
-            # Right mouse button clicked (context menu)
-            elif event.button == 3:
-                # Handle input
-                for input in inputs:
-                    if input.rect.collidepoint(mos_pos):
-                        menu = input.handle_menu_create(mos_pos)
-                        if menu is not None:
-                            menus.append(menu)
-                        break
-                # Handle light
-                for light in lights:
-                    if light.handle_click(mos_pos):
-                        menu = light.handle_menu_create(mos_pos)
-                        if menu is not None:
-                            menus.append(menu)
-                        break
-                
-                # Close menus if clicked outside of them
-                auto_close_menus_from_click()
+                    for input in inputs:
+                        check_wire_connects(input)
+                    for light in lights:
+                        check_wire_connects(light)
+                        
+                    if wire_conncted and len(wire_connectors_selected) >= 2:
+                        wires.append(Wire(screen, wire_connectors_selected[0], wire_connectors_selected[1]))
+                        wire_connectors_selected.clear()
+                        adding_wire = False
 
     # Remove deleted elements
     for input in inputs:

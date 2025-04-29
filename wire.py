@@ -3,7 +3,7 @@ import math
 from config import *
 
 class Wire:
-    def __init__(self, screen, initial_element, ending_element, state):
+    def __init__(self, screen, initial_element, ending_element, state = 0):
         self.screen = screen
         self.initial_element = initial_element
         self.ending_element = ending_element
