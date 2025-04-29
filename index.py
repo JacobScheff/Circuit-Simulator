@@ -135,6 +135,8 @@ while running:
                         if wire_conncted:
                             return
                         
+                        # TODO: Check to make sure the second selected connection isn't the same as the first
+                        
                         # Determine if any wires are connected
                         connectors = element.wire_connectors
                         for i in range(len(connectors)):
@@ -148,7 +150,7 @@ while running:
                         check_wire_connects(light)
                         
                     if wire_conncted and len(wire_connectors_selected) >= 2:
-                        wires.append(Wire(screen, wire_connectors_selected[0], wire_connectors_selected[1]))
+                        wires.append(Wire(screen, wire_connectors_selected[0][0], wire_connectors_selected[0][1], wire_connectors_selected[1][0], wire_connectors_selected[1][1]))
                         wire_connectors_selected.clear()
                         adding_wire = False
 
@@ -172,6 +174,10 @@ while running:
         for i in range(0, SCREEN_SIZE[1], GRID_SIZE):
             pygame.draw.line(screen, (50, 50, 50), (0, i), (SCREEN_SIZE[0], i))
     
+    # Draw the wires
+    for wire in wires:
+        wire.draw()
+
     # Draw the inputs
     for input in inputs:
         input.draw()
