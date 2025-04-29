@@ -4,6 +4,7 @@ from menu import Menu
 from new_element import NewElementButton
 from input import Input
 from wire import Wire
+from light import Light
 
 SCREEN_SIZE = (1200, 600)
 GRID_SIZE = 25 # Grid size when grid is enabled
@@ -17,9 +18,10 @@ running = True
 
 menus = []
 inputs = []
+lights = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100), 0)]
+sample_elements = [Input(screen, (100, 100), 0), Light(screen, (100, 100))]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():
@@ -58,6 +60,10 @@ while running:
                 for input in inputs:
                     something_clicked = input.handle_click(mos_pos) or something_clicked
 
+                # Handle light
+                for light in lights:
+                    something_clicked = light.handle_click(mos_pos) or something_clicked
+
                 # Handle new element button
                 if new_element_button.collidepoint(mos_pos):
                     something_clicked = True
@@ -65,7 +71,11 @@ while running:
                         global adding_element
                         adding_element = 0
                         return True
-                    menu = Menu(screen, mos_pos, ["Input"], [input_selected])
+                    def light_selected():
+                        global adding_element
+                        adding_element = 1
+                        return True
+                    menu = Menu(screen, mos_pos, ["Input", "Light"], [input_selected, light_selected])
                     menus.append(menu)
 
                 # Close menus if clicked outside of them
@@ -75,7 +85,10 @@ while running:
                 if not something_clicked and adding_element >= 0:
                     # Create a new element
                     new_element = sample_elements[adding_element].create_new_element(mos_pos)
-                    inputs.append(new_element)
+                    if adding_element == 0:
+                        inputs.append(new_element)
+                    elif adding_element == 1:
+                        lights.append(new_element)
 
                     # Reset adding_element
                     adding_element = -1
@@ -89,6 +102,13 @@ while running:
                         if menu is not None:
                             menus.append(menu)
                         break
+                # Handle light
+                for light in lights:
+                    if light.handle_click(mos_pos):
+                        menu = light.handle_menu_create(mos_pos)
+                        if menu is not None:
+                            menus.append(menu)
+                        break
                 
                 # Close menus if clicked outside of them
                 auto_close_menus_from_click()
@@ -97,6 +117,10 @@ while running:
     for input in inputs:
         if input.deleted:
             inputs.remove(input)
+            break
+    for light in lights:
+        if light.deleted:
+            lights.remove(light)
             break
 
     # Clear the screen
@@ -112,6 +136,10 @@ while running:
     # Draw the inputs
     for input in inputs:
         input.draw()
+
+    # Draw the lights
+    for light in lights:
+        light.draw()
 
     # Draw the new element button
     new_element_button.draw()

@@ -9,7 +9,7 @@ class Input:
         self.state = state
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
-        self.deleted = False # Whether to delete the input box next frame
+        self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
         # Draw the input box
