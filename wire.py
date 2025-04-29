@@ -1,5 +1,6 @@
 import pygame
 import math
+from config import *
 
 class Wire:
     def __init__(self, screen, initial_element, ending_element, state):

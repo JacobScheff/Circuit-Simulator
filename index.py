@@ -1,19 +1,16 @@
 import pygame
 import math
+from config import *
 from menu import Menu
 from new_element import NewElementButton
 from input import Input
 from wire import Wire
 from light import Light
 
-SCREEN_SIZE = (1200, 600)
-GRID_SIZE = 25 # Grid size when grid is enabled
-
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("Circuit Simualtor")
 clock = pygame.time.Clock()
-FPS = 60
 running = True
 adding_wire = False
 

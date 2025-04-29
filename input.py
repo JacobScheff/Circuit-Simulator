@@ -1,5 +1,6 @@
 import pygame
 import math
+from config import *
 from menu import Menu
 
 class Input:
@@ -24,7 +25,7 @@ class Input:
         self.screen.blit(text, text_rect)
 
         # Draw the wire connector
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], 5)
+        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], WIRE_CONNECOR_RADIUS)
 
     def set_pos(self, pos):
         # Set the position of the input box

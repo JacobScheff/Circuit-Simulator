@@ -1,5 +1,6 @@
 import pygame
 import math
+from config import *
 from menu import Menu
 
 class Light:
@@ -17,8 +18,8 @@ class Light:
         pygame.draw.circle(self.screen, color, self.pos, self.radius)
 
         # Draw the wire connectors
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], 5)
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1], 5)
+        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], WIRE_CONNECOR_RADIUS)
+        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1], WIRE_CONNECOR_RADIUS)
 
     def set_pos(self, pos):
         # Set the position of the light bulb
