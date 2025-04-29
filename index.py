@@ -70,10 +70,7 @@ while running:
                 # If nothing was clicked, and adding_element is not -1, create a new element
                 if not something_clicked and adding_element >= 0:
                     # Create a new element
-                    # TODO: Create deep copy of sample_element (including copying the objects it stores inside) instead of copying reference
-                    print("TODO!!!!!!!!!!!!!!")
-                    new_element = sample_elements[adding_element]
-                    new_element.set_pos(mos_pos)
+                    new_element = sample_elements[adding_element].create_new_element(mos_pos)
                     inputs.append(new_element)
 
                     # Reset adding_element

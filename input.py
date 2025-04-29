@@ -45,3 +45,7 @@ class Input:
             
             menu = Menu(self.screen, mouse_pos, ["Delete"], [delete_input])
             return menu
+        
+    def create_new_element(self, mouse_pos):
+        new_element = Input(self.screen, mouse_pos, 0)
+        return new_element
