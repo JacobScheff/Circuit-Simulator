@@ -15,6 +15,7 @@ pygame.display.set_caption("Circuit Simualtor")
 clock = pygame.time.Clock()
 FPS = 60
 running = True
+adding_wire = False
 
 menus = []
 inputs = []
@@ -73,6 +74,9 @@ while running:
                 # Handle new element button
                 if new_element_button.collidepoint(mos_pos):
                     something_clicked = True
+                    def wire_selected():
+                        adding_wire = True
+                        return True
                     def input_selected():
                         global adding_element
                         adding_element = 0
@@ -81,7 +85,7 @@ while running:
                         global adding_element
                         adding_element = 1
                         return True
-                    menu = Menu(screen, mos_pos, ["Input", "Light"], [input_selected, light_selected])
+                    menu = Menu(screen, mos_pos, ["Wire", "Input", "Light"], [wire_selected, input_selected, light_selected])
                     menus.append(menu)
 
                 # Close menus if clicked outside of them
