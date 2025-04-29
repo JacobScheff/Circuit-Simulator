@@ -6,6 +6,7 @@ from input import Input
 from wire import Wire
 
 SCREEN_SIZE = (1200, 600)
+GRID_SIZE = 25 # Grid size when grid is enabled
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -27,16 +28,19 @@ def auto_close_menus_from_click():
             menus.remove(menu)
 
 while running:
+    # Check if shift is held down
+    shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
+
+    # Get the mouse position
     mos_pos = pygame.mouse.get_pos()
+
+    # If shift is held down, snap the mouse position to the grid
+    if shift:
+        mos_pos = (math.floor(mos_pos[0] / GRID_SIZE) * GRID_SIZE, math.floor(mos_pos[1] / GRID_SIZE) * GRID_SIZE)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
-                mouse_pos = pygame.mouse.get_pos()
-                inputs.append(Input(screen, mouse_pos, 0))
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Left mouse button clicked
@@ -95,7 +99,15 @@ while running:
             inputs.remove(input)
             break
 
+    # Clear the screen
     screen.fill((0, 0, 0))
+
+    # If shift is held down, draw the grid with gridsize
+    if shift:
+        for i in range(0, SCREEN_SIZE[0], GRID_SIZE):
+            pygame.draw.line(screen, (50, 50, 50), (i, 0), (i, SCREEN_SIZE[1]))
+        for i in range(0, SCREEN_SIZE[1], GRID_SIZE):
+            pygame.draw.line(screen, (50, 50, 50), (0, i), (SCREEN_SIZE[0], i))
     
     # Draw the inputs
     for input in inputs:
