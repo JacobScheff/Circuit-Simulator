@@ -43,6 +43,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.KEYDOWN:
+            # Escape key pressed, close all menus
+            if event.key == pygame.K_ESCAPE:
+                menus.clear()
+                adding_element = -1
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Left mouse button clicked
