@@ -151,9 +151,9 @@ while running:
                     for light in lights:
                         check_wire_connects(light)
                         
-                    if wire_conncted and len(wire_connectors_selected) >= 2:
-                        wires.append(Wire(screen, wire_connectors_selected[0][0], wire_connectors_selected[0][1], wire_connectors_selected[1][0], wire_connectors_selected[1][1]))
-                        wire_connectors_selected.clear() # TODO: .clear() is likely resetting the reference to the element in the wire
+                    wire_connectors_selected_len = len(wire_connectors_selected)
+                    if wire_conncted and len(wire_connectors_selected) % 2 == 0:
+                        wires.append(Wire(screen, wire_connectors_selected[wire_connectors_selected_len - 2][0], wire_connectors_selected[wire_connectors_selected_len - 2][1], wire_connectors_selected[wire_connectors_selected_len - 1][0], wire_connectors_selected[wire_connectors_selected_len - 1][1]))
                         adding_wire = False
 
     # Remove deleted elements
