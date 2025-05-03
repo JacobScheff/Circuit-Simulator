@@ -148,7 +148,7 @@ while running:
                         # Determine if any wires are connected
                         connectors = element.wire_connectors
                         for i in range(len(connectors)):
-                            if not wire_conncted and math.hypot(connectors[i][0] - mos_pos[0], connectors[i][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
+                            if not wire_conncted and math.hypot(connectors[i][0][0] - mos_pos[0], connectors[i][0][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                 wire_conncted = True
                                 wire_connectors_selected.append((element, i))
 
@@ -190,6 +190,13 @@ while running:
     for wire in wires:
         wire.update()
 
+    # Update the elements' states
+    print("TODO!!! Make update element stats account for the new input and output wire connector types")
+    for input in inputs:
+        input.update()
+    for light in lights:
+        light.update()
+
     # Draw the wires
     for wire in wires:
         wire.draw()
@@ -205,7 +212,7 @@ while running:
     # Draw the selected wire connectors
     wire_connectors_selected_len = len(wire_connectors_selected)
     if wire_connectors_selected_len % 2 == 1:
-        pygame.draw.circle(screen, (255, 0, 0), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1]], WIRE_CONNECOR_RADIUS)
+        pygame.draw.circle(screen, (255, 0, 0), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1][0]], WIRE_CONNECOR_RADIUS, 5)
 
     # Draw the new element button
     new_element_button.draw()
@@ -226,7 +233,7 @@ while running:
 
     # Draw a wire from selected element to mouse position if adding a wire and only first element is selected
     if adding_wire and wire_connectors_selected_len % 2 == 1:
-        pygame.draw.line(screen, (255, 255, 255), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1]], mos_pos, 5)
+        pygame.draw.line(screen, (255, 255, 255), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1][0]], mos_pos, 5)
 
     pygame.display.flip()
     clock.tick(FPS)

@@ -14,7 +14,7 @@ class Wire:
 
     def draw(self):
         # Draw a line from the initial element to the ending element
-        pygame.draw.line(self.screen, WIRE_ON_COLOR if self.state else WIRE_OFF_COLOR, self.initial_element.wire_connectors[self.initial_index], self.ending_element.wire_connectors[self.ending_index], 5)
+        pygame.draw.line(self.screen, WIRE_ON_COLOR if self.state else WIRE_OFF_COLOR, self.initial_element.wire_connectors[self.initial_index][0], self.ending_element.wire_connectors[self.ending_index][0], 5)
 
     # Update the wire's state
     def update(self):

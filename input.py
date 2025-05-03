@@ -10,7 +10,7 @@ class Input:
         self.state = state
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
-        self.wire_connectors = [(pos[0] + size[0] / 2, pos[1])]
+        self.wire_connectors = [((pos[0] + size[0] / 2, pos[1]), True)] # (pos, is_input)
         self.input_elements = []
         self.deleted = False # Whether to delete the element next frame
 
@@ -26,7 +26,7 @@ class Input:
         self.screen.blit(text, text_rect)
 
         # Draw the wire connector
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], WIRE_CONNECOR_RADIUS)
+        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0][0], WIRE_CONNECOR_RADIUS)
 
     def update(self):
         # self.state should not update from the inputted elements since the inputs themselves are what changes the entire state of the circuit
@@ -36,7 +36,7 @@ class Input:
         # Set the position of the input box
         self.rect.x = pos[0] - self.rect.width / 2
         self.rect.y = pos[1] - self.rect.height / 2
-        self.wire_connectors[0] = (pos[0] + self.rect.width / 2, pos[1])
+        self.wire_connectors[0] = ((pos[0] + self.rect.width / 2, pos[1]), True)
 
     # Return True if the input box was clicked
     def handle_click(self, mouse_pos):

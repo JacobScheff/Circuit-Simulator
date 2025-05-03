@@ -9,7 +9,7 @@ class Light:
         self.pos = pos
         self.radius = 30
         self.state = False
-        self.wire_connectors = [(pos[0] - self.radius, pos[1]), (pos[0] + self.radius, pos[1])]
+        self.wire_connectors = [((pos[0] - self.radius, pos[1]), True), ((pos[0] + self.radius, pos[1]), False)] # (pos, is_input)
         self.input_elements = [] # List of elements that connect to this light
         self.deleted = False # Whether to delete the element next frame
 
@@ -19,8 +19,8 @@ class Light:
         pygame.draw.circle(self.screen, color, self.pos, self.radius)
 
         # Draw the wire connectors
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], WIRE_CONNECOR_RADIUS)
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1], WIRE_CONNECOR_RADIUS)
+        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0][0], WIRE_CONNECOR_RADIUS)
+        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1][0], WIRE_CONNECOR_RADIUS)
 
     def update(self):
         # Update the state of the light bulb based on the input elements
@@ -29,8 +29,8 @@ class Light:
     def set_pos(self, pos):
         # Set the position of the light bulb
         self.pos = pos
-        self.wire_connectors[0] = (pos[0] - self.radius, pos[1])
-        self.wire_connectors[1] = (pos[0] + self.radius, pos[1])
+        self.wire_connectors[0] = ((pos[0] - self.radius, pos[1]), True)
+        self.wire_connectors[1] = ((pos[0] + self.radius, pos[1]), False)
 
     # Return True if the light bulb was clicked
     def handle_click(self, mouse_pos):
