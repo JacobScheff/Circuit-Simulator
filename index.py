@@ -50,6 +50,9 @@ while running:
                 menus.clear()
                 adding_element = -1
                 adding_wire = False
+                # If an element is selcted for wire connection and second isn't selected, remove the first one
+                if len(wire_connectors_selected) % 2 == 1:
+                    wire_connectors_selected.pop()
         
         if event.type == pygame.MOUSEBUTTONDOWN:
 
