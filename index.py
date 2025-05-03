@@ -209,6 +209,14 @@ while running:
         element.set_pos(mos_pos)
         element.draw()
 
+    # Draw a wire icon at mos_pos if adding a wire and no element is selected yet
+    if adding_wire and wire_connectors_selected_len % 2 == 0:
+        pygame.draw.rect(screen, (255, 255, 255), (mos_pos[0] - WIRE_CONNECOR_RADIUS / 2, mos_pos[1] - WIRE_CONNECOR_RADIUS / 2, WIRE_CONNECOR_RADIUS, WIRE_CONNECOR_RADIUS))
+
+    # Draw a wire from selected element to mouse position if adding a wire and only first element is selected
+    if adding_wire and wire_connectors_selected_len % 2 == 1:
+        pygame.draw.line(screen, (255, 255, 255), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1]], mos_pos, 5)
+
     pygame.display.flip()
     clock.tick(FPS)
 
