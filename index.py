@@ -150,7 +150,7 @@ while running:
                         for i in range(len(connectors)):
                             if not wire_conncted and math.hypot(connectors[i][0][0] - mos_pos[0], connectors[i][0][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                 wire_conncted = True
-                                wire_connectors_selected.append((element, i, connectors[i][1]))
+                                wire_connectors_selected.append((element, i))
 
                     for input in inputs:
                         check_wire_connects(input)
@@ -158,7 +158,7 @@ while running:
                         check_wire_connects(light)
                         
                     if wire_conncted and len(wire_connectors_selected) % 2 == 0:
-                        wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-2][2], wire_connectors_selected[-1][0], wire_connectors_selected[-1][1], wire_connectors_selected[-1][2]))
+                        wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-1][0], wire_connectors_selected[-1][1]))
                         adding_wire = False
 
                         # Add the wire to the elements' input_wires list

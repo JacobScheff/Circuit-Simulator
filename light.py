@@ -23,8 +23,20 @@ class Light:
         pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1][0], WIRE_CONNECOR_RADIUS)
 
     def update(self):
+        self.state = False # Reset the state of the light bulb
+        
         # Update the state of the light bulb based on the input elements
-        self.state = any(input_wire.state and ((input_wire.ending_element == self and input_wire.ending_is_input) or (input_wire.initial_element == self and input_wire.initial_is_input)) for input_wire in self.input_wires)
+        for wire in self.input_wires:
+            connector_index = wire.ending_index if wire.ending_element == self else wire.initial_index
+
+            # If the wire is not connected to this light bulb's input connector, skip it
+            if not self.wire_connectors[connector_index][1]:
+                continue
+
+            # If the wire is active, set the light bulb's state to True
+            if wire.state:
+                self.state = True
+                return
 
     def set_pos(self, pos):
         # Set the position of the light bulb
