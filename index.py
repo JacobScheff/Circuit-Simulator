@@ -194,7 +194,6 @@ while running:
     # Draw the selected wire connectors
     wire_connectors_selected_len = len(wire_connectors_selected)
     if wire_connectors_selected_len % 2 == 1:
-        pygame.draw.circle(screen, (255, 0, 0), wire_connectors_selected[wire_connectors_selected_len - 2][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 2][1]], WIRE_CONNECOR_RADIUS)
         pygame.draw.circle(screen, (255, 0, 0), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1]], WIRE_CONNECOR_RADIUS)
 
     # Draw the new element button
