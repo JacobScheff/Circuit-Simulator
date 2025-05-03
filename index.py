@@ -137,7 +137,10 @@ while running:
                         if wire_conncted:
                             return
                         
-                        # TODO: Check to make sure the second selected connection isn't the same as the first
+                        # Check to make sure the second selected connection isn't the same as the first
+                        if len(wire_connectors_selected) % 2 == 1:
+                            if element == wire_connectors_selected[wire_connectors_selected_len - 1][0]:
+                                return
                         
                         # Determine if any wires are connected
                         connectors = element.wire_connectors
