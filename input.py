@@ -11,6 +11,7 @@ class Input:
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
         self.wire_connectors = [(pos[0] + size[0] / 2, pos[1])]
+        self.input_elements = []
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
@@ -26,6 +27,10 @@ class Input:
 
         # Draw the wire connector
         pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], WIRE_CONNECOR_RADIUS)
+
+    def update(self):
+        # self.state should not update from the inputted elements since the inputs themselves are what changes the entire state of the circuit
+        return
 
     def set_pos(self, pos):
         # Set the position of the input box

@@ -162,6 +162,10 @@ while running:
                         wires.append(Wire(screen, wire_connectors_selected[wire_connectors_selected_len - 2][0], wire_connectors_selected[wire_connectors_selected_len - 2][1], wire_connectors_selected[wire_connectors_selected_len - 1][0], wire_connectors_selected[wire_connectors_selected_len - 1][1]))
                         adding_wire = False
 
+                        # Add the wire to the elements' input_elements list
+                        wire_connectors_selected[wire_connectors_selected_len - 2][0].input_elements.append(wires[-1])
+                        wire_connectors_selected[wire_connectors_selected_len - 1][0].input_elements.append(wires[-1])
+
     # Remove deleted elements
     for input in inputs:
         if input.deleted:

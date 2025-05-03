@@ -10,6 +10,7 @@ class Light:
         self.radius = 30
         self.state = False
         self.wire_connectors = [(pos[0] - self.radius, pos[1]), (pos[0] + self.radius, pos[1])]
+        self.input_elements = [] # List of elements that connect to this light
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
