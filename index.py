@@ -182,6 +182,10 @@ while running:
         for i in range(0, SCREEN_SIZE[1], GRID_SIZE):
             pygame.draw.line(screen, (50, 50, 50), (0, i), (SCREEN_SIZE[0], i))
     
+    # Update the wires' states
+    for wire in wires:
+        wire.update()
+
     # Draw the wires
     for wire in wires:
         wire.draw()
