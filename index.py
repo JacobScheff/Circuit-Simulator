@@ -144,7 +144,7 @@ while running:
                         for i in range(len(connectors)):
                             if not wire_conncted and math.hypot(connectors[i][0] - mos_pos[0], connectors[i][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                 wire_conncted = True
-                                wire_connectors_selected.append((input, i))
+                                wire_connectors_selected.append((element, i))
 
                     for input in inputs:
                         check_wire_connects(input)
