@@ -6,10 +6,11 @@ from new_element import NewElementButton
 from input import Input
 from wire import Wire
 from light import Light
+from or_gate import OrGate
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
-pygame.display.set_caption("Circuit Simualtor")
+pygame.display.set_caption("Circuit Simulator")
 clock = pygame.time.Clock()
 running = True
 adding_wire = False
@@ -19,9 +20,10 @@ menus = []
 wires = []
 inputs = []
 lights = []
+or_gates = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100), 0), Light(screen, (100, 100))]
+sample_elements = [Input(screen, (100, 100), 0), Light(screen, (100, 100)), OrGate(screen, (100, 100))] 
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():
@@ -77,6 +79,10 @@ while running:
                     for light in lights:
                         something_clicked = light.handle_click(mos_pos) or something_clicked
 
+                    # Handle or
+                    for or_gate in or_gates:
+                        something_clicked = or_gate.handle_click(mos_pos) or something_clicked
+
                     # Handle new element button
                     if new_element_button.collidepoint(mos_pos):
                         something_clicked = True
@@ -92,7 +98,11 @@ while running:
                             global adding_element
                             adding_element = 1
                             return True
-                        menu = Menu(screen, mos_pos, ["Wire", "Input", "Light"], [wire_selected, input_selected, light_selected])
+                        def or_selected():
+                            global adding_element
+                            adding_element = 2
+                            return True
+                        menu = Menu(screen, mos_pos, ["Wire", "Input", "Light", "Or"], [wire_selected, input_selected, light_selected, or_selected])
                         menus.append(menu)
 
                     # Close menus if clicked outside of them
@@ -106,6 +116,8 @@ while running:
                             inputs.append(new_element)
                         elif adding_element == 1:
                             lights.append(new_element)
+                        elif adding_element == 2:
+                            or_gates.append(new_element)
 
                         # Reset adding_element
                         adding_element = -1
@@ -123,6 +135,13 @@ while running:
                     for light in lights:
                         if light.handle_click(mos_pos):
                             menu = light.handle_menu_create(mos_pos)
+                            if menu is not None:
+                                menus.append(menu)
+                            break
+                    # Handle or
+                    for or_gate in or_gates:
+                        if or_gate.handle_click(mos_pos):
+                            menu = or_gate.handle_menu_create(mos_pos)
                             if menu is not None:
                                 menus.append(menu)
                             break
@@ -156,6 +175,8 @@ while running:
                         check_wire_connects(input)
                     for light in lights:
                         check_wire_connects(light)
+                    for or_gate in or_gates:
+                        check_wire_connects(or_gate)
                         
                     if wire_conncted and len(wire_connectors_selected) % 2 == 0:
                         wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-1][0], wire_connectors_selected[-1][1]))
@@ -173,6 +194,10 @@ while running:
     for light in lights:
         if light.deleted:
             lights.remove(light)
+            break
+    for or_gate in or_gates:
+        if or_gate.deleted:
+            or_gates.remove(or_gate)
             break
 
     # Clear the screen
@@ -194,6 +219,8 @@ while running:
         input.update()
     for light in lights:
         light.update()
+    for or_gate in or_gates:
+        or_gate.update()
 
     # Draw the wires
     for wire in wires:
@@ -206,6 +233,10 @@ while running:
     # Draw the lights
     for light in lights:
         light.draw()
+
+    # Draw the or gates
+    for or_gate in or_gates:
+        or_gate.draw()
 
     # Draw the selected wire connectors
     if len(wire_connectors_selected) % 2 == 1:
