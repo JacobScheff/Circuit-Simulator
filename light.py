@@ -22,6 +22,10 @@ class Light:
         pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0], WIRE_CONNECOR_RADIUS)
         pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1], WIRE_CONNECOR_RADIUS)
 
+    def update(self):
+        # Update the state of the light bulb based on the input elements
+        self.state = any(input_element.state for input_element in self.input_elements)
+
     def set_pos(self, pos):
         # Set the position of the light bulb
         self.pos = pos
