@@ -144,7 +144,7 @@ while running:
                         
                         # Check to make sure the second selected connection isn't the same as the first
                         if len(wire_connectors_selected) % 2 == 1:
-                            if element == wire_connectors_selected[wire_connectors_selected_len - 1][0]:
+                            if element == wire_connectors_selected[-1][0]:
                                 return
                         
                         # Determine if any wires are connected
@@ -152,21 +152,20 @@ while running:
                         for i in range(len(connectors)):
                             if not wire_conncted and math.hypot(connectors[i][0][0] - mos_pos[0], connectors[i][0][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                 wire_conncted = True
-                                wire_connectors_selected.append((element, i))
+                                wire_connectors_selected.append((element, i, connectors[i][1]))
 
                     for input in inputs:
                         check_wire_connects(input)
                     for light in lights:
                         check_wire_connects(light)
                         
-                    wire_connectors_selected_len = len(wire_connectors_selected)
                     if wire_conncted and len(wire_connectors_selected) % 2 == 0:
-                        wires.append(Wire(screen, wire_connectors_selected[wire_connectors_selected_len - 2][0], wire_connectors_selected[wire_connectors_selected_len - 2][1], wire_connectors_selected[wire_connectors_selected_len - 1][0], wire_connectors_selected[wire_connectors_selected_len - 1][1]))
+                        wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-2][2], wire_connectors_selected[-1][0], wire_connectors_selected[- 1][1], wire_connectors_selected[-1][2]))
                         adding_wire = False
 
                         # Add the wire to the elements' input_elements list
-                        wire_connectors_selected[wire_connectors_selected_len - 2][0].input_elements.append(wires[-1])
-                        wire_connectors_selected[wire_connectors_selected_len - 1][0].input_elements.append(wires[-1])
+                        wire_connectors_selected[-2][0].input_elements.append(wires[-1])
+                        wire_connectors_selected[-1][0].input_elements.append(wires[-1])
 
     # Remove deleted elements
     for input in inputs:
@@ -193,7 +192,6 @@ while running:
         wire.update()
 
     # Update the elements' states
-    # print("TODO!!! Make update element stats account for the new input and output wire connector types")
     for input in inputs:
         input.update()
     for light in lights:
@@ -234,7 +232,7 @@ while running:
 
     # Draw a wire from selected element to mouse position if adding a wire and only first element is selected
     if adding_wire and len(wire_connectors_selected) % 2 == 1:
-        pygame.draw.line(screen, (255, 255, 255), wire_connectors_selected[wire_connectors_selected_len - 1][0].wire_connectors[wire_connectors_selected[wire_connectors_selected_len - 1][1]][0], mos_pos, 5)
+        pygame.draw.line(screen, (255, 255, 255), wire_connectors_selected[-1][0].wire_connectors[wire_connectors_selected[-1][1]][0], mos_pos, 5)
 
     pygame.display.flip()
     clock.tick(FPS)
