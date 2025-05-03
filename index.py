@@ -7,8 +7,6 @@ from input import Input
 from wire import Wire
 from light import Light
 
-# TODO: Remove the len-1 and len-2 with just [-1] and [-2] to simplify code
-
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("Circuit Simualtor")
@@ -160,7 +158,7 @@ while running:
                         check_wire_connects(light)
                         
                     if wire_conncted and len(wire_connectors_selected) % 2 == 0:
-                        wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-2][2], wire_connectors_selected[-1][0], wire_connectors_selected[- 1][1], wire_connectors_selected[-1][2]))
+                        wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-2][2], wire_connectors_selected[-1][0], wire_connectors_selected[-1][1], wire_connectors_selected[-1][2]))
                         adding_wire = False
 
                         # Add the wire to the elements' input_wires list
