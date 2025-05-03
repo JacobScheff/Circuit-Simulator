@@ -10,8 +10,8 @@ class Input:
         self.state = state
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
-        self.wire_connectors = [((pos[0] + size[0] / 2, pos[1]), True)] # (pos, is_input)
-        self.input_elements = []
+        self.wire_connectors = [((pos[0] + size[0] / 2, pos[1]), False)] # (pos, is_input)
+        self.input_wires = []
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):

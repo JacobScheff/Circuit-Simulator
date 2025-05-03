@@ -20,7 +20,7 @@ class Wire:
 
     # Update the wire's state
     def update(self):
-        starting_end_state = self.initial_element.state
-        ending_end_state = self.ending_element.state
+        starting_end_state = self.initial_element.state and not self.initial_is_input
+        ending_end_state = self.ending_element.state and not self.ending_is_input
 
         self.state = starting_end_state or ending_end_state

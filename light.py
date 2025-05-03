@@ -10,7 +10,7 @@ class Light:
         self.radius = 30
         self.state = False
         self.wire_connectors = [((pos[0] - self.radius, pos[1]), True), ((pos[0] + self.radius, pos[1]), False)] # (pos, is_input)
-        self.input_elements = [] # List of elements that connect to this light
+        self.input_wires = [] # List of wires that connect to this light
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
@@ -24,7 +24,7 @@ class Light:
 
     def update(self):
         # Update the state of the light bulb based on the input elements
-        self.state = any(input_element.state for input_element in self.input_elements)
+        self.state = any(input_wire.state and ((input_wire.ending_element == self and input_wire.ending_is_input) or (input_wire.initial_element == self and input_wire.initial_is_input)) for input_wire in self.input_wires)
 
     def set_pos(self, pos):
         # Set the position of the light bulb
