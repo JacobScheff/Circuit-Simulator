@@ -209,7 +209,7 @@ while running:
         if wire.deleted:
             wires.remove(wire)
             break
-    print("TODO!!!! Turning on light then removing the wire to it doesn't turn off light")
+    # print("TODO!!!! Turning on light then removing the wire to it doesn't turn off light")
 
     # Clear the screen
     screen.fill((0, 0, 0))

@@ -45,7 +45,5 @@ class Wire:
     # Prepare for deletion
     def delete(self):
         self.deleted = True
-        if not self.initial_element.input_wires.remove(self):
-            print("Error: Wire not found in initial element's input wires")
-        if not self.ending_element.input_wires.remove(self):
-            print("Error: Wire not found in ending element's input wires")
+        self.initial_element.input_wires.remove(self)
+        self.ending_element.input_wires.remove(self)
