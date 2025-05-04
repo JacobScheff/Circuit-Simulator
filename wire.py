@@ -29,6 +29,13 @@ class Wire:
         # Check if the mouse is close to the wire
         x1, y1 = self.initial_element.wire_connectors[self.initial_index][0]
         x2, y2 = self.ending_element.wire_connectors[self.ending_index][0]
+        
+        # Check if mouse_pos is outside bounds of the wire
+        if (mouse_pos[0] < min(x1, x2) or mouse_pos[0] > max(x1, x2) or
+            mouse_pos[1] < min(y1, y2) or mouse_pos[1] > max(y1, y2)):
+            return False
+
+        # Calculate the distance from the mouse to the line segment
         distance = abs((y2 - y1) * mouse_pos[0] - (x2 - x1) * mouse_pos[1] + x2 * y1 - y2 * x1) / math.hypot(x2 - x1, y2 - y1)
         return distance < WIRE_RADIUS
 
