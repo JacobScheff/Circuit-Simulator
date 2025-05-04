@@ -75,18 +75,6 @@ while running:
                     for input in inputs:
                         something_clicked = input.handle_click(mos_pos) or something_clicked
 
-                    # Handle wire
-                    for wire in wires:
-                        something_clicked = wire.handle_click(mos_pos) or something_clicked
-
-                    # Handle light
-                    for light in lights:
-                        something_clicked = light.handle_click(mos_pos) or something_clicked
-
-                    # Handle or
-                    for or_gate in or_gates:
-                        something_clicked = or_gate.handle_click(mos_pos) or something_clicked
-
                     # Handle new element button
                     if new_element_button.collidepoint(mos_pos):
                         something_clicked = True
