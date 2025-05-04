@@ -75,6 +75,10 @@ while running:
                     for input in inputs:
                         something_clicked = input.handle_click(mos_pos) or something_clicked
 
+                    # Handle wire
+                    for wire in wires:
+                        something_clicked = wire.handle_click(mos_pos) or something_clicked
+
                     # Handle light
                     for light in lights:
                         something_clicked = light.handle_click(mos_pos) or something_clicked
@@ -128,6 +132,13 @@ while running:
                     for input in inputs:
                         if input.rect.collidepoint(mos_pos):
                             menu = input.handle_menu_create(mos_pos)
+                            if menu is not None:
+                                menus.append(menu)
+                            break
+                    # Handle wire
+                    for wire in wires:
+                        if wire.handle_click(mos_pos):
+                            menu = wire.handle_menu_create(mos_pos)
                             if menu is not None:
                                 menus.append(menu)
                             break
@@ -189,16 +200,28 @@ while running:
     # Remove deleted elements
     for input in inputs:
         if input.deleted:
+            for wire in input.input_wires:
+                wire.delete()
             inputs.remove(input)
             break
     for light in lights:
         if light.deleted:
+            for wire in light.input_wires:
+                wire.delete()
             lights.remove(light)
             break
     for or_gate in or_gates:
         if or_gate.deleted:
+            for wire in or_gate.input_wires:
+                wire.delete()
             or_gates.remove(or_gate)
             break
+    # Wire is at end since the elements need to remove references to it first
+    for wire in wires:
+        if wire.deleted:
+            wires.remove(wire)
+            break
+    print("TODO!!!! Turning on light then removing the wire to it doesn't turn off light")
 
     # Clear the screen
     screen.fill((0, 0, 0))

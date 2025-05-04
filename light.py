@@ -51,7 +51,7 @@ class Light:
         return False
 
     def handle_menu_create(self, mouse_pos):
-        # Check if the input box is clicked
+        # Check if the light is clicked
         if math.hypot(self.pos[0] - mouse_pos[0], self.pos[1] - mouse_pos[1]) < self.radius:
             def delete_input():
                 self.deleted = True
