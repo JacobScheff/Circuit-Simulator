@@ -207,6 +207,7 @@ while running:
     # Wire is at end since the elements need to remove references to it first
     for wire in wires:
         if wire.deleted:
+            wire.delete()
             wires.remove(wire)
             break
     # print("TODO!!!! Turning on light then removing the wire to it doesn't turn off light")

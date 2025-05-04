@@ -37,9 +37,7 @@ class Light:
             if wire.state:
                 self.state = True
                 return
-        
-        print(self.input_wires)
-
+    
     def set_pos(self, pos):
         # Set the position of the light bulb
         self.pos = pos

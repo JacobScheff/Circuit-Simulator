@@ -45,5 +45,12 @@ class Wire:
     # Prepare for deletion
     def delete(self):
         self.deleted = True
-        self.initial_element.input_wires.remove(self)
-        self.ending_element.input_wires.remove(self)
+        # Try except since element may already be deleted
+        try:
+            self.initial_element.input_wires.remove(self)
+        except ValueError:
+            pass
+        try:
+            self.ending_element.input_wires.remove(self)
+        except ValueError:
+            pass
