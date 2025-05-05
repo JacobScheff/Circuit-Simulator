@@ -14,7 +14,7 @@ class OrGate:
 
     def draw(self):
         # Draw OR_GATE_IMAGE
-        self.screen.blit(OR_GATE_IMAGE, (self.pos[0] - OR_GATE_IMAGE.get_width() // 2, self.pos[1] - OR_GATE_IMAGE.get_height() // 2))
+        self.screen.blit(OR_GATE_IMAGE if self.state else OR_GATE_OFF_IMAGE, (self.pos[0] - OR_GATE_IMAGE.get_width() // 2, self.pos[1] - OR_GATE_IMAGE.get_height() // 2))
 
         # Draw the wire connectors
         for connector in self.wire_connectors:

@@ -11,3 +11,4 @@ WIRE_OFF_COLOR = (100, 100, 100) # Color of the wire when off
 
 ### --- Symbols --- ###
 OR_GATE_IMAGE = pygame.image.load("symbols/or_gate.tiff")
+OR_GATE_OFF_IMAGE = pygame.image.load("symbols/or_gate.tiff").copy()
