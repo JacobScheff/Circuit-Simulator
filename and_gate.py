@@ -9,7 +9,7 @@ class AndGate:
         self.pos = pos
         self.state = False
         self.wire_connectors = [((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] - OR_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] + OR_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] + OR_GATE_IMAGE.get_width() // 5, self.pos[1]), False)] # (pos, is_input)
-        self.input_wires = [] # List of wires that connect to this light
+        self.input_wires = [] # List of wires that connect to this element
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
@@ -21,12 +21,12 @@ class AndGate:
             pygame.draw.circle(self.screen, (0, 0, 255), connector[0], WIRE_CONNECOR_RADIUS)
 
     def update(self):
-        self.state = False # Reset the state of the light bulb
+        self.state = False # Reset the state of the element
 
         first_input = False
         second_input = False
         
-        # Update the state of the light bulb based on the input elements
+        # Update the state of the element based on the input elements
         for wire in self.input_wires:
             connector_index = wire.ending_index if wire.ending_element == self else wire.initial_index
 
@@ -34,24 +34,24 @@ class AndGate:
             if not self.wire_connectors[connector_index][1]:
                 continue
 
-            # If the wire is active, set the light bulb's state to True
+            # If the wire is active, set the element's state to True
             if wire.state and connector_index == 0:
                 first_input = True
             elif wire.state and connector_index == 1:
                 second_input = True
 
-        # If both inputs are True, set the light bulb's state to True
+        # If both inputs are True, set the element's state to True
         if first_input and second_input:
             self.state = True
 
     def set_pos(self, pos):
-        # Set the position of the light bulb
+        # Set the position of the element
         self.pos = pos
         self.wire_connectors[0] = ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] - OR_GATE_IMAGE.get_height() // 5), True)
         self.wire_connectors[1] = ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] + OR_GATE_IMAGE.get_height() // 5), True)
         self.wire_connectors[2] = ((self.pos[0] + OR_GATE_IMAGE.get_width() // 5, self.pos[1]), False)
 
-    # Return True if the light bulb was clicked
+    # Return True if the element was clicked
     def handle_click(self, mouse_pos):
         # TODO
         return False
