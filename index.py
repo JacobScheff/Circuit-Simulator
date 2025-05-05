@@ -7,6 +7,7 @@ from input import Input
 from wire import Wire
 from light import Light
 from or_gate import OrGate
+from and_gate import AndGate
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -24,9 +25,10 @@ wires = []
 inputs = []
 lights = []
 or_gates = []
+and_gates = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100), 0), Light(screen, (100, 100)), OrGate(screen, (100, 100))] 
+sample_elements = [Input(screen, (100, 100), 0), Light(screen, (100, 100)), OrGate(screen, (100, 100)), AndGate(screen, (100, 100))] 
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():
@@ -97,7 +99,11 @@ while running:
                             global adding_element
                             adding_element = 2
                             return True
-                        menu = Menu(screen, mos_pos, ["Wire", "Input", "Light", "Or"], [wire_selected, input_selected, light_selected, or_selected])
+                        def and_selected():
+                            global adding_element
+                            adding_element = 3
+                            return True
+                        menu = Menu(screen, mos_pos, ["Wire", "Input", "Light", "Or", "And"], [wire_selected, input_selected, light_selected, or_selected, and_selected])
                         menus.append(menu)
 
                     # Close menus if clicked outside of them
@@ -113,6 +119,8 @@ while running:
                             lights.append(new_element)
                         elif adding_element == 2:
                             or_gates.append(new_element)
+                        elif adding_element == 3:
+                            and_gates.append(new_element)
 
                         # Reset adding_element
                         adding_element = -1
@@ -144,6 +152,14 @@ while running:
                     for or_gate in or_gates:
                         if or_gate.handle_click(mos_pos):
                             menu = or_gate.handle_menu_create(mos_pos)
+                            if menu is not None:
+                                menus.append(menu)
+                            break
+
+                    # Handle and
+                    for and_gate in and_gates:
+                        if and_gate.handle_click(mos_pos):
+                            menu = and_gate.handle_menu_create(mos_pos)
                             if menu is not None:
                                 menus.append(menu)
                             break
@@ -179,6 +195,8 @@ while running:
                         check_wire_connects(light)
                     for or_gate in or_gates:
                         check_wire_connects(or_gate)
+                    for and_gate in and_gates:
+                        check_wire_connects(and_gate)
                         
                     if wire_conncted and len(wire_connectors_selected) % 2 == 0:
                         wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-1][0], wire_connectors_selected[-1][1]))
@@ -206,6 +224,12 @@ while running:
             for wire in or_gate.input_wires:
                 wire.delete()
             or_gates.remove(or_gate)
+            break
+    for and_gate in and_gates:
+        if and_gate.deleted:
+            for wire in and_gate.input_wires:
+                wire.delete()
+            and_gates.remove(and_gate)
             break
     # Wire is at end since the elements need to remove references to it first
     for wire in wires:
@@ -235,6 +259,8 @@ while running:
         light.update()
     for or_gate in or_gates:
         or_gate.update()
+    for and_gate in and_gates:
+        and_gate.update()
 
     # Draw the wires
     for wire in wires:
@@ -251,6 +277,9 @@ while running:
     # Draw the or gates
     for or_gate in or_gates:
         or_gate.draw()
+    # Draw the and gates
+    for and_gate in and_gates:
+        and_gate.draw()
 
     # Draw the selected wire connectors
     if len(wire_connectors_selected) % 2 == 1:
