@@ -14,7 +14,7 @@ class AndGate:
 
     def draw(self):
         # Draw a gray circle
-        pygame.draw.circle(self.screen, (192, 192, 192), self.pos, 20)
+        pygame.draw.circle(self.screen, (192, 192, 192)if not self.state else (255, 255, 255), self.pos, 20)
 
         # Draw the wire connectors
         for connector in self.wire_connectors:
