@@ -22,6 +22,9 @@ class AndGate:
 
     def update(self):
         self.state = False # Reset the state of the light bulb
+
+        first_input = False
+        second_input = False
         
         # Update the state of the light bulb based on the input elements
         for wire in self.input_wires:
@@ -32,9 +35,14 @@ class AndGate:
                 continue
 
             # If the wire is active, set the light bulb's state to True
-            if wire.state:
-                self.state = True
-                return
+            if wire.state and connector_index == 0:
+                first_input = True
+            elif wire.state and connector_index == 1:
+                second_input = True
+
+        # If both inputs are True, set the light bulb's state to True
+        if first_input and second_input:
+            self.state = True
 
     def set_pos(self, pos):
         # Set the position of the light bulb
