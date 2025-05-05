@@ -8,7 +8,7 @@ class OrGate:
         self.screen = screen
         self.pos = pos
         self.state = False
-        self.wire_connectors = [] # (pos, is_input)
+        self.wire_connectors = [((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] - OR_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] + OR_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] + OR_GATE_IMAGE.get_width() // 5, self.pos[1]), False)] # (pos, is_input)
         self.input_wires = [] # List of wires that connect to this light
         self.deleted = False # Whether to delete the element next frame
 
@@ -27,7 +27,7 @@ class OrGate:
         for wire in self.input_wires:
             connector_index = wire.ending_index if wire.ending_element == self else wire.initial_index
 
-            # If the wire is not connected to this light bulb's input connector, skip it
+            # If the wire is not connected to one of the input connectors, skip it
             if not self.wire_connectors[connector_index][1]:
                 continue
 
@@ -39,6 +39,9 @@ class OrGate:
     def set_pos(self, pos):
         # Set the position of the light bulb
         self.pos = pos
+        self.wire_connectors[0] = ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] - OR_GATE_IMAGE.get_height() // 5), True)
+        self.wire_connectors[1] = ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] + OR_GATE_IMAGE.get_height() // 5), True)
+        self.wire_connectors[2] = ((self.pos[0] + OR_GATE_IMAGE.get_width() // 5, self.pos[1]), False)
 
     # Return True if the light bulb was clicked
     def handle_click(self, mouse_pos):
