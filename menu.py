@@ -2,13 +2,14 @@ import pygame
 import math
 
 class Menu:
-    def __init__(self, screen, position, options, callbacks, close_on_click=True):
+    def __init__(self, screen, position, options, callbacks, close_on_click=True, closing_callback=lambda: None):
         self.screen = screen
         self.position = position
         self.options = options
         self.callbacks = callbacks
         self.font = pygame.font.Font(None, 36)
         self.close_on_click = close_on_click # Whether to close the menu when something other than the menu is clicked
+        self.closing_callback = closing_callback # Callback to call when the menu is closed NOTE: This is purely for storage, it must be called by whatever closes the menu
 
         self.background_color = (120, 120, 120)
         self.text_color = (255, 255, 255)

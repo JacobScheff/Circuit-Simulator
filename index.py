@@ -29,6 +29,7 @@ element_names = ["Input", "Light", "Or", "And", "Not"]
 elements = [[] for _ in range(len(element_types))]
 sample_elements = [element(screen, (0, 0)) for element in element_types]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
+new_element_menu_visible = False
 
 # Returns the list that the element belongs to
 def element_to_list(element):
@@ -40,7 +41,37 @@ def element_to_list(element):
 def auto_close_menus_from_click():
     for menu in menus:
         if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
+            menu.closing_callback()
             menus.remove(menu)
+
+# Runs when the new element button is clicked or w key is pressed
+def create_new_element_menu():
+    global adding_element
+    global something_clicked
+    global new_element_menu_visible
+    something_clicked = True
+    selected_functions = [] # The functions to run when the menu button is clicked
+
+    # Wire selected
+    def wire_selected():
+        global adding_wire
+        adding_wire = True
+        return True
+    selected_functions.append(wire_selected)
+
+    # Element selected
+    for i in range(len(element_types)):
+        def element_selected_function(i):
+            global adding_element
+            adding_element = i
+            return True
+        selected_functions.append(lambda i=i: element_selected_function(i))
+        def set_new_element_visible_to_false():
+            global new_element_menu_visible
+            new_element_menu_visible = False
+    menu = Menu(screen, mos_pos, ["Wire"] + element_names, selected_functions, True, set_new_element_visible_to_false)
+    menus.append(menu)
+    new_element_menu_visible = True
 
 while running:
     # Check if shift is held down
@@ -59,7 +90,11 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             # Escape key pressed, close all menus
-            if event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_w:
+                # If the new element key is pressed, no element or wire is being added, and the create new element menu isn't visible, then create a new element menu
+                if adding_element == -1 and not adding_wire and not new_element_menu_visible:
+                    create_new_element_menu()
+            elif event.key == pygame.K_ESCAPE:
                 menus.clear()
                 adding_element = -1
                 adding_wire = False
@@ -68,7 +103,6 @@ while running:
                     wire_connectors_selected.pop()
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-
             # Not adding a wire
             if not adding_wire:
                 # Left mouse button clicked
@@ -79,6 +113,7 @@ while running:
                         # If handle_click returns True, close the menu
                         if menu.handle_click(mos_pos):
                             something_clicked = True
+                            menu.closing_callback()
                             menus.remove(menu)
                             break
 
@@ -90,25 +125,7 @@ while running:
 
                     # Handle new element button
                     if new_element_button.collidepoint(mos_pos):
-                        something_clicked = True
-                        selected_functions = [] # The functions to run when the menu button is clicked
-
-                        # Wire selected
-                        def wire_selected():
-                            global adding_wire
-                            adding_wire = True
-                            return True
-                        selected_functions.append(wire_selected)
-
-                        # Element selected
-                        for i in range(len(element_types)):
-                            def element_selected_function(i):
-                                global adding_element
-                                adding_element = i
-                                return True
-                            selected_functions.append(lambda i=i: element_selected_function(i))
-                        menu = Menu(screen, mos_pos, ["Wire"] + element_names, selected_functions)
-                        menus.append(menu)
+                        create_new_element_menu()
 
                     # Close menus if clicked outside of them
                     auto_close_menus_from_click()
