@@ -39,7 +39,7 @@ def auto_close_menus_from_click():
 while running:
     # Check if shift is held down
     shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
-print("TODO!!!!! Modify write connectors to represent offsets, not global positions")
+
     # Get the mouse position
     mos_pos = pygame.mouse.get_pos()
 
@@ -199,7 +199,7 @@ print("TODO!!!!! Modify write connectors to represent offsets, not global positi
                         # Determine if any wires are connected
                         connectors = element.wire_connectors
                         for i in range(len(connectors)):
-                            if not wire_conncted and math.hypot(connectors[i][0][0] - mos_pos[0], connectors[i][0][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
+                            if not wire_conncted and math.hypot(element.pos[0] + connectors[i][0][0] - mos_pos[0], element.pos[1] + connectors[i][0][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                 wire_conncted = True
                                 wire_connectors_selected.append((element, i))
 
@@ -308,7 +308,9 @@ print("TODO!!!!! Modify write connectors to represent offsets, not global positi
 
     # Draw the selected wire connectors
     if len(wire_connectors_selected) % 2 == 1:
-        pygame.draw.circle(screen, (255, 0, 0), wire_connectors_selected[-1][0].wire_connectors[wire_connectors_selected[-1][1]][0], WIRE_CONNECOR_RADIUS, 5)
+        last_connected_element_pos = wire_connectors_selected[-1][0].pos
+        last_connected_connector_pos = wire_connectors_selected[-1][0].wire_connectors[wire_connectors_selected[-1][1]][0]
+        pygame.draw.circle(screen, (255, 0, 0), (last_connected_element_pos[0] + last_connected_connector_pos[0], last_connected_element_pos[1] + last_connected_connector_pos[1]), WIRE_CONNECOR_RADIUS)
 
     # Draw the new element button
     new_element_button.draw()
@@ -329,7 +331,9 @@ print("TODO!!!!! Modify write connectors to represent offsets, not global positi
 
     # Draw a wire from selected element to mouse position if adding a wire and only first element is selected
     if adding_wire and len(wire_connectors_selected) % 2 == 1:
-        pygame.draw.line(screen, (255, 255, 255), wire_connectors_selected[-1][0].wire_connectors[wire_connectors_selected[-1][1]][0], mos_pos, 5)
+        last_connected_element_pos = wire_connectors_selected[-1][0].pos
+        last_connected_connector_pos = wire_connectors_selected[-1][0].wire_connectors[wire_connectors_selected[-1][1]][0]
+        pygame.draw.line(screen, (255, 255, 255), (last_connected_element_pos[0] + last_connected_connector_pos[0], last_connected_element_pos[1] + last_connected_connector_pos[1]), mos_pos, WIRE_WIDTH)
 
     pygame.display.flip()
     clock.tick(FPS)

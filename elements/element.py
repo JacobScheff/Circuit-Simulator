@@ -1,3 +1,7 @@
+import pygame
+import math
+from config import *
+
 class Element:
     def __init__(self, screen, pos):
         self.screen = screen
@@ -24,7 +28,13 @@ class Element:
     def draw(self):
         # This method should be implemented by subclasses
         raise NotImplementedError("Subclasses must implement this method")
-
+    
+    # Draw the wire connectors
+    def draw_wire_connectors(self):
+        for connecter_pos, _ in self.wire_connectors:
+            color = (0, 0, 255)
+            pygame.draw.circle(self.screen, color, (self.pos[0] + connecter_pos[0], self.pos[1] + connecter_pos[1]), WIRE_CONNECOR_RADIUS)
+    
     # Update the state of the element based on the input elements
     def update(self):
         # This method should be implemented by subclasses

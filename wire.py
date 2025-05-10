@@ -15,7 +15,11 @@ class Wire:
 
     def draw(self):
         # Draw a line between the two wire connectors
-        pygame.draw.line(self.screen, WIRE_ON_COLOR if self.state else WIRE_OFF_COLOR, self.initial_element.wire_connectors[self.initial_index][0], self.ending_element.wire_connectors[self.ending_index][0], WIRE_RADIUS)
+        initial_element_pos = self.initial_element.pos
+        intial_connector_pos = self.initial_element.wire_connectors[self.initial_index][0]
+        ending_element_pos = self.ending_element.pos
+        ending_connector_pos = self.ending_element.wire_connectors[self.ending_index][0]
+        pygame.draw.line(self.screen, WIRE_ON_COLOR if self.state else WIRE_OFF_COLOR, (initial_element_pos[0] + intial_connector_pos[0], initial_element_pos[1] + intial_connector_pos[1]), (ending_element_pos[0] + ending_connector_pos[0], ending_element_pos[1] + ending_connector_pos[1]), WIRE_WIDTH)
 
     # Update the wire's state
     def update(self):
@@ -27,8 +31,12 @@ class Wire:
     # Return True if the wire was clicked
     def handle_click(self, mouse_pos):
         # Check if the mouse is close to the wire
-        x1, y1 = self.initial_element.wire_connectors[self.initial_index][0]
-        x2, y2 = self.ending_element.wire_connectors[self.ending_index][0]
+        initial_element_pos = self.initial_element.pos
+        intial_connector_pos = self.initial_element.wire_connectors[self.initial_index][0]
+        ending_element_pos = self.ending_element.pos
+        ending_connector_pos = self.ending_element.wire_connectors[self.ending_index][0]
+        x1, y1 = initial_element_pos[0] + intial_connector_pos[0], initial_element_pos[1] + intial_connector_pos[1]
+        x2, y2 = ending_element_pos[0] + ending_connector_pos[0], ending_element_pos[1] + ending_connector_pos[1]
         
         # Check if mouse_pos is outside bounds of the wire
         if (mouse_pos[0] < min(x1, x2) or mouse_pos[0] > max(x1, x2) or
@@ -37,7 +45,7 @@ class Wire:
 
         # Calculate the distance from the mouse to the line segment
         distance = abs((y2 - y1) * mouse_pos[0] - (x2 - x1) * mouse_pos[1] + x2 * y1 - y2 * x1) / math.hypot(x2 - x1, y2 - y1)
-        return distance < WIRE_RADIUS
+        return distance < WIRE_WIDTH
 
     def handle_menu_create(self, mouse_pos):
         # Check if the wire is clicked
