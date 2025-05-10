@@ -8,15 +8,14 @@ class AndGate(Element):
     def __init__(self, screen, pos):
         super().__init__(screen, pos)
 
-        self.wire_connectors = [((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] - AND_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] + AND_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] + AND_GATE_IMAGE.get_width() // 6, self.pos[1]), False)] # (pos, is_input)
+        self.wire_connectors = [((-AND_GATE_IMAGE.get_width() // 6, -AND_GATE_IMAGE.get_height() // 5), True), ((-AND_GATE_IMAGE.get_width() // 6, AND_GATE_IMAGE.get_height() // 5), True), ((AND_GATE_IMAGE.get_width() // 6, 0), False)] # (pos, is_input)
 
     def draw(self):
         # Draw AND_GATE_IMAGE
         self.screen.blit(AND_GATE_IMAGE if self.state else AND_GATE_OFF_IMAGE, (self.pos[0] - AND_GATE_IMAGE.get_width() // 2, self.pos[1] - AND_GATE_IMAGE.get_height() // 2))
 
         # Draw the wire connectors
-        for connector in self.wire_connectors:
-            pygame.draw.circle(self.screen, (0, 0, 255), connector[0], WIRE_CONNECOR_RADIUS)
+        self.draw_wire_connectors()
 
     def update(self):
         self.state = 0 # Reset the state of the element
@@ -41,13 +40,6 @@ class AndGate(Element):
         # If both inputs are True, set the element's state to True
         if first_input and second_input:
             self.state = True
-
-    def set_pos(self, pos):
-        # Set the position of the element
-        self.pos = pos
-        self.wire_connectors[0] = ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] - AND_GATE_IMAGE.get_height() // 5), True)
-        self.wire_connectors[1] = ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] + AND_GATE_IMAGE.get_height() // 5), True)
-        self.wire_connectors[2] = ((self.pos[0] + AND_GATE_IMAGE.get_width() // 6, self.pos[1]), False)
 
     # Return True if the element was clicked
     def handle_click(self, mouse_pos):

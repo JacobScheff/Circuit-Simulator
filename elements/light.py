@@ -8,7 +8,7 @@ class Light(Element):
     def __init__(self, screen, pos):
         super().__init__(screen, pos)
 
-        self.wire_connectors = [((pos[0] - LIGHT_RADIUS, pos[1]), True), ((pos[0] + LIGHT_RADIUS, pos[1]), False)]
+        self.wire_connectors = [((-LIGHT_RADIUS, 0), True), ((LIGHT_RADIUS, 0), False)]
 
     def draw(self):
         # Draw the light bulb
@@ -16,8 +16,7 @@ class Light(Element):
         pygame.draw.circle(self.screen, color, self.pos, LIGHT_RADIUS)
 
         # Draw the wire connectors
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[0][0], WIRE_CONNECOR_RADIUS)
-        pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1][0], WIRE_CONNECOR_RADIUS)
+        self.draw_wire_connectors()
 
     def update(self):
         self.state = 0 # Reset the state of the light bulb
@@ -34,12 +33,6 @@ class Light(Element):
             if wire.state:
                 self.state = True
                 return
-    
-    def set_pos(self, pos):
-        # Set the position of the light bulb
-        self.pos = pos
-        self.wire_connectors[0] = ((pos[0] - LIGHT_RADIUS, pos[1]), True)
-        self.wire_connectors[1] = ((pos[0] + LIGHT_RADIUS, pos[1]), False)
 
     # Return True if the light bulb was clicked
     def handle_click(self, mouse_pos):

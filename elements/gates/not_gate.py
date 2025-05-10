@@ -8,7 +8,7 @@ class NotGate(Element):
     def __init__(self, screen, pos):
         super().__init__(screen, pos)
 
-        self.wire_connectors = [((self.pos[0] - NOT_GATE_IMAGE.get_width() // 5, self.pos[1]), True), ((self.pos[0] + NOT_GATE_IMAGE.get_width() // 4, self.pos[1]), False)] # (pos, is_input)
+        self.wire_connectors = [((-NOT_GATE_IMAGE.get_width() // 5, 0), True), ((NOT_GATE_IMAGE.get_width() // 4, 0), False)] # (pos, is_input)
 
     def draw(self):
         # Draw NOT_GATE_IMAGE
@@ -36,11 +36,6 @@ class NotGate(Element):
             
         # If the input is False, set the not gate's output to True
         self.state = True
-
-    def set_pos(self, pos):
-        self.pos = pos
-        self.wire_connectors[0] = ((self.pos[0] - NOT_GATE_IMAGE.get_width() // 5, self.pos[1]), True)
-        self.wire_connectors[1] = ((self.pos[0] + NOT_GATE_IMAGE.get_width() // 4, self.pos[1]), False)
 
     # Return True if the element was clicked
     def handle_click(self, mouse_pos):

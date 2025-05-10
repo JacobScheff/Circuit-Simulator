@@ -23,7 +23,7 @@ class Input(Element):
         text_rect = text.get_rect(center=self.rect.center)
         self.screen.blit(text, text_rect)
 
-        # Draw the wire connector
+        # Draw the wire connectors
         self.draw_wire_connectors()
 
     def update(self):
