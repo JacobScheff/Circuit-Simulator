@@ -39,7 +39,7 @@ def auto_close_menus_from_click():
 while running:
     # Check if shift is held down
     shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
-
+print("TODO!!!!! Modify write connectors to represent offsets, not global positions")
     # Get the mouse position
     mos_pos = pygame.mouse.get_pos()
 
