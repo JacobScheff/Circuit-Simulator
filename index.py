@@ -20,6 +20,7 @@ wire_connectors_selected = []
 
 # Create gate off images
 OR_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
+AND_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
 
 menus = []
 wires = []
