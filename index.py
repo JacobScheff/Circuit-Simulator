@@ -3,6 +3,7 @@ import math
 from config import *
 from menu import Menu
 from new_element import NewElementButton
+from wire import Wire
 from elements import *
 
 pygame.init()
