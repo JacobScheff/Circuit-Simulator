@@ -3,13 +3,7 @@ import math
 from config import *
 from menu import Menu
 from new_element import NewElementButton
-from elements.wire import Wire
-from elements.input import Input
-from elements.light import Light
-from elements.gates import or_gate, and_gate, not_gate
-from elements.gates.or_gate import OrGate
-from elements.gates.and_gate import AndGate
-from elements.gates.not_gate import NotGate
+from elements import *
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
