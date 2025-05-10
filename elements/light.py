@@ -6,7 +6,6 @@ from elements.element import Element
 
 class Light(Element):
     def __init__(self, screen, pos):
-        # Initialize the parent class (Shape) with color
         super().__init__(screen, pos)
 
         self.wire_connectors = [((pos[0] - LIGHT_RADIUS, pos[1]), True), ((pos[0] + LIGHT_RADIUS, pos[1]), False)]
@@ -21,7 +20,7 @@ class Light(Element):
         pygame.draw.circle(self.screen, (0, 0, 255), self.wire_connectors[1][0], WIRE_CONNECOR_RADIUS)
 
     def update(self):
-        self.state = False # Reset the state of the light bulb
+        self.state = 0 # Reset the state of the light bulb
         
         # Update the state of the light bulb based on the input elements
         for wire in self.input_wires:

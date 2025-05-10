@@ -2,17 +2,15 @@ import pygame
 import math
 from config import *
 from menu import Menu
+from elements.element import Element
 
-class Input:
-    def __init__(self, screen, pos, state):
-        self.screen = screen
-        self.pos = pos
-        self.state = state
+class Input(Element):
+    def __init__(self, screen, pos):
+        super().__init__(screen, pos)
+
         size = (50, 20)
         self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
         self.wire_connectors = [((pos[0] + size[0] / 2, pos[1]), False)] # (pos, is_input)
-        self.input_wires = []
-        self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
         # Draw the input box
@@ -58,5 +56,5 @@ class Input:
             return menu
         
     def create_new_element(self, mouse_pos):
-        new_element = Input(self.screen, mouse_pos, 0)
+        new_element = Input(self.screen, mouse_pos)
         return new_element

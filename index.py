@@ -27,7 +27,7 @@ and_gates = []
 not_gates = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100), 0), Light(screen, (100, 100)), OrGate(screen, (100, 100)), AndGate(screen, (100, 100)), NotGate(screen, (100, 100))]
+sample_elements = [Input(screen, (100, 100)), Light(screen, (100, 100)), OrGate(screen, (100, 100)), AndGate(screen, (100, 100)), NotGate(screen, (100, 100))]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():

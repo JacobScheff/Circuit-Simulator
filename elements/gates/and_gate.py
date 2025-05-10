@@ -2,15 +2,13 @@ import pygame
 import math
 from config import *
 from menu import Menu
+from elements.element import Element
 
-class AndGate:
+class AndGate(Element):
     def __init__(self, screen, pos):
-        self.screen = screen
-        self.pos = pos
-        self.state = False
+        super().__init__(screen, pos)
+
         self.wire_connectors = [((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] - AND_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] + AND_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] + AND_GATE_IMAGE.get_width() // 6, self.pos[1]), False)] # (pos, is_input)
-        self.input_wires = [] # List of wires that connect to this element
-        self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
         # Draw AND_GATE_IMAGE
@@ -21,7 +19,7 @@ class AndGate:
             pygame.draw.circle(self.screen, (0, 0, 255), connector[0], WIRE_CONNECOR_RADIUS)
 
     def update(self):
-        self.state = False # Reset the state of the element
+        self.state = 0 # Reset the state of the element
 
         first_input = False
         second_input = False
