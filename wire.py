@@ -14,7 +14,7 @@ class Wire:
         self.deleted = False
 
     def draw(self):
-        # Draw a line from the initial element to the ending element
+        # Draw a line between the two wire connectors
         pygame.draw.line(self.screen, WIRE_ON_COLOR if self.state else WIRE_OFF_COLOR, self.initial_element.wire_connectors[self.initial_index][0], self.ending_element.wire_connectors[self.ending_index][0], WIRE_RADIUS)
 
     # Update the wire's state
