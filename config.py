@@ -15,3 +15,6 @@ OR_GATE_OFF_IMAGE = pygame.image.load("symbols/or_gate.tiff").copy()
 
 AND_GATE_IMAGE = pygame.image.load("symbols/and_gate.tiff")
 AND_GATE_OFF_IMAGE = pygame.image.load("symbols/and_gate.tiff").copy()
+
+NOT_GATE_IMAGE = pygame.image.load("symbols/not_gate.tiff")
+NOT_GATE_OFF_IMAGE = pygame.image.load("symbols/not_gate.tiff").copy()

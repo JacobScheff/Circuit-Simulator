@@ -8,13 +8,13 @@ class AndGate:
         self.screen = screen
         self.pos = pos
         self.state = False
-        self.wire_connectors = [((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] - OR_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] + OR_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] + OR_GATE_IMAGE.get_width() // 6, self.pos[1]), False)] # (pos, is_input)
+        self.wire_connectors = [((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] - AND_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] + AND_GATE_IMAGE.get_height() // 5), True), ((self.pos[0] + AND_GATE_IMAGE.get_width() // 6, self.pos[1]), False)] # (pos, is_input)
         self.input_wires = [] # List of wires that connect to this element
         self.deleted = False # Whether to delete the element next frame
 
     def draw(self):
         # Draw AND_GATE_IMAGE
-        self.screen.blit(AND_GATE_IMAGE if self.state else AND_GATE_OFF_IMAGE, (self.pos[0] - OR_GATE_IMAGE.get_width() // 2, self.pos[1] - OR_GATE_IMAGE.get_height() // 2))
+        self.screen.blit(AND_GATE_IMAGE if self.state else AND_GATE_OFF_IMAGE, (self.pos[0] - AND_GATE_IMAGE.get_width() // 2, self.pos[1] - AND_GATE_IMAGE.get_height() // 2))
 
         # Draw the wire connectors
         for connector in self.wire_connectors:
@@ -47,9 +47,9 @@ class AndGate:
     def set_pos(self, pos):
         # Set the position of the element
         self.pos = pos
-        self.wire_connectors[0] = ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] - OR_GATE_IMAGE.get_height() // 5), True)
-        self.wire_connectors[1] = ((self.pos[0] - OR_GATE_IMAGE.get_width() // 6, self.pos[1] + OR_GATE_IMAGE.get_height() // 5), True)
-        self.wire_connectors[2] = ((self.pos[0] + OR_GATE_IMAGE.get_width() // 6, self.pos[1]), False)
+        self.wire_connectors[0] = ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] - AND_GATE_IMAGE.get_height() // 5), True)
+        self.wire_connectors[1] = ((self.pos[0] - AND_GATE_IMAGE.get_width() // 6, self.pos[1] + AND_GATE_IMAGE.get_height() // 5), True)
+        self.wire_connectors[2] = ((self.pos[0] + AND_GATE_IMAGE.get_width() // 6, self.pos[1]), False)
 
     # Return True if the element was clicked
     def handle_click(self, mouse_pos):
