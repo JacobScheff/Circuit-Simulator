@@ -21,11 +21,7 @@ NOT_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
 
 menus = []
 wires = []
-inputs = []
-lights = []
-or_gates = []
-and_gates = []
-not_gates = []
+
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
 element_types = [Input, Light, OrGate, AndGate, NotGate]
@@ -36,18 +32,10 @@ adding_element = -1 # -1 means no adding element selected, >0 is index of sample
 
 # Returns the list that the element belongs to
 def element_to_list(element):
-    if isinstance(element, Input):
-        return inputs
-    elif isinstance(element, Light):
-        return lights
-    elif isinstance(element, OrGate):
-        return or_gates
-    elif isinstance(element, AndGate):
-        return and_gates
-    elif isinstance(element, NotGate):
-        return not_gates
-    else:
-        raise ValueError("Invalid element type")
+    for i in range(len(element_types)):
+        if isinstance(element, element_types[i]):
+            return elements[i]
+    raise ValueError("Element not found in any list")
 
 def auto_close_menus_from_click():
     for menu in menus:
@@ -94,9 +82,11 @@ while running:
                             menus.remove(menu)
                             break
 
-                    # Handle input
-                    for input in inputs:
-                        something_clicked = input.handle_click(mos_pos) or something_clicked
+                    # Handle elements
+                    for elements_list in elements:
+                        for element in elements_list:
+                            # If handle_click returns True, close the menu
+                            something_clicked = element.handle_click(mos_pos) or something_clicked
 
                     # Handle new element button
                     if new_element_button.collidepoint(mos_pos):
@@ -127,29 +117,13 @@ while running:
                     if not something_clicked and adding_element >= 0:
                         # Create a new element
                         new_element = sample_elements[adding_element].create_new_element(mos_pos)
-                        if adding_element == 0:
-                            inputs.append(new_element)
-                        elif adding_element == 1:
-                            lights.append(new_element)
-                        elif adding_element == 2:
-                            or_gates.append(new_element)
-                        elif adding_element == 3:
-                            and_gates.append(new_element)
-                        elif adding_element == 4:
-                            not_gates.append(new_element)
+                        elements[adding_element].append(new_element)
 
                         # Reset adding_element
                         adding_element = -1
 
                 # Right mouse button clicked (context menu)
                 elif event.button == 3:
-                    # Handle input
-                    for input in inputs:
-                        if input.rect.collidepoint(mos_pos):
-                            menu = input.handle_menu_create(mos_pos)
-                            if menu is not None:
-                                menus.append(menu)
-                            break
                     # Handle wire
                     for wire in wires:
                         if wire.handle_click(mos_pos):
@@ -157,36 +131,15 @@ while running:
                             if menu is not None:
                                 menus.append(menu)
                             break
-                    # Handle light
-                    for light in lights:
-                        if light.handle_click(mos_pos):
-                            menu = light.handle_menu_create(mos_pos)
-                            if menu is not None:
-                                menus.append(menu)
-                            break
-                    # Handle or
-                    for or_gate in or_gates:
-                        if or_gate.handle_click(mos_pos):
-                            menu = or_gate.handle_menu_create(mos_pos)
-                            if menu is not None:
-                                menus.append(menu)
-                            break
 
-                    # Handle and
-                    for and_gate in and_gates:
-                        if and_gate.handle_click(mos_pos):
-                            menu = and_gate.handle_menu_create(mos_pos)
-                            if menu is not None:
-                                menus.append(menu)
-                            break
-
-                    # Handle not
-                    for not_gate in not_gates:
-                        if not_gate.handle_click(mos_pos):
-                            menu = not_gate.handle_menu_create(mos_pos)
-                            if menu is not None:
-                                menus.append(menu)
-                            break
+                    # Handle elements
+                    for elements_list in elements:
+                        for element in elements_list:
+                            if element.handle_click(mos_pos):
+                                menu = element.handle_menu_create(mos_pos)
+                                if menu is not None:
+                                    menus.append(menu)
+                                break
                         
                     # Close menus if clicked outside of them
                     auto_close_menus_from_click()
@@ -213,16 +166,10 @@ while running:
                                 wire_conncted = True
                                 wire_connectors_selected.append((element, i))
 
-                    for input in inputs:
-                        check_wire_connects(input)
-                    for light in lights:
-                        check_wire_connects(light)
-                    for or_gate in or_gates:
-                        check_wire_connects(or_gate)
-                    for and_gate in and_gates:
-                        check_wire_connects(and_gate)
-                    for not_gate in not_gates:
-                        check_wire_connects(not_gate)
+                    # Check if the mouse is over the wire connector of any element
+                    for elements_list in elements:
+                        for element in elements_list:
+                            check_wire_connects(element)
                         
                     if wire_conncted and len(wire_connectors_selected) % 2 == 0:
                         wires.append(Wire(screen, wire_connectors_selected[-2][0], wire_connectors_selected[-2][1], wire_connectors_selected[-1][0], wire_connectors_selected[-1][1]))
@@ -233,37 +180,15 @@ while running:
                         wire_connectors_selected[-1][0].input_wires.append(wires[-1])
 
     # Remove deleted elements
-    for input in inputs:
-        if input.deleted:
-            for wire in input.input_wires:
-                wire.delete()
-            inputs.remove(input)
-            break
-    for light in lights:
-        if light.deleted:
-            for wire in light.input_wires:
-                wire.delete()
-            lights.remove(light)
-            break
-    for or_gate in or_gates:
-        if or_gate.deleted:
-            for wire in or_gate.input_wires:
-                wire.delete()
-            or_gates.remove(or_gate)
-            break
-    for and_gate in and_gates:
-        if and_gate.deleted:
-            for wire in and_gate.input_wires:
-                wire.delete()
-            and_gates.remove(and_gate)
-            break
-    for not_gate in not_gates:
-        if not_gate.deleted:
-            for wire in not_gate.input_wires:
-                wire.delete()
-            not_gates.remove(not_gate)
-            break
-    # Wire is at end since the elements need to remove references to it first
+    for element_list in elements:
+        for element in element_list:
+            if element.deleted:
+                # Remove the element from the wires' input_wires list
+                for wire in wires:
+                        wire.delete()
+                element_list.remove(element)
+                break # Can break since user can only delete one element at a time
+    # Remove deleted wires - Wire is at end since the elements need to remove references to it first
     for wire in wires:
         if wire.deleted:
             wire.delete()
@@ -285,36 +210,18 @@ while running:
         wire.update()
 
     # Update the elements' states
-    for input in inputs:
-        input.update()
-    for light in lights:
-        light.update()
-    for or_gate in or_gates:
-        or_gate.update()
-    for and_gate in and_gates:
-        and_gate.update()
-    for not_gate in not_gates:
-        not_gate.update()
+    for elements_list in elements:
+        for element in elements_list:
+            element.update()
 
     # Draw the wires
     for wire in wires:
         wire.draw()
 
-    # Draw the inputs
-    for input in inputs:
-        input.draw()
-    # Draw the lights
-    for light in lights:
-        light.draw()
-    # Draw the or gates
-    for or_gate in or_gates:
-        or_gate.draw()
-    # Draw the and gates
-    for and_gate in and_gates:
-        and_gate.draw()
-    # Draw the not gates
-    for not_gate in not_gates:
-        not_gate.draw()
+    # Draw the elements
+    for elements_list in elements:
+        for element in elements_list:
+            element.draw()
 
     # Draw the selected wire connectors
     if len(wire_connectors_selected) % 2 == 1:
