@@ -34,6 +34,21 @@ elements = [[] for _ in range(len(element_types))]
 sample_elements = [element(screen, (0, 0)) for element in element_types]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
+# Returns the list that the element belongs to
+def element_to_list(element):
+    if isinstance(element, Input):
+        return inputs
+    elif isinstance(element, Light):
+        return lights
+    elif isinstance(element, OrGate):
+        return or_gates
+    elif isinstance(element, AndGate):
+        return and_gates
+    elif isinstance(element, NotGate):
+        return not_gates
+    else:
+        raise ValueError("Invalid element type")
+
 def auto_close_menus_from_click():
     for menu in menus:
         if not menu.bg_rect.collidepoint(mos_pos) and menu.close_on_click:
