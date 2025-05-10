@@ -15,8 +15,7 @@ class NotGate(Element):
         self.screen.blit(NOT_GATE_IMAGE if self.state else NOT_GATE_OFF_IMAGE, (self.pos[0] - NOT_GATE_IMAGE.get_width() // 2, self.pos[1] - NOT_GATE_IMAGE.get_height() // 2))
 
         # Draw the wire connectors
-        for connector in self.wire_connectors:
-            pygame.draw.circle(self.screen, (0, 0, 255), connector[0], WIRE_CONNECOR_RADIUS)
+        self.draw_wire_connectors()
 
     def update(self):
         self.state = 0 # Reset the state of the element
