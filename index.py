@@ -28,7 +28,10 @@ and_gates = []
 not_gates = []
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-sample_elements = [Input(screen, (100, 100)), Light(screen, (100, 100)), OrGate(screen, (100, 100)), AndGate(screen, (100, 100)), NotGate(screen, (100, 100))]
+element_types = [Input, Light, OrGate, AndGate, NotGate]
+element_names = ["Input", "Light", "Or", "And", "Not"]
+elements = [[] for _ in range(len(element_types))]
+sample_elements = [element(screen, (0, 0)) for element in element_types]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
 
 def auto_close_menus_from_click():
@@ -83,31 +86,23 @@ while running:
                     # Handle new element button
                     if new_element_button.collidepoint(mos_pos):
                         something_clicked = True
+                        selected_functions = [] # The functions to run when the menu button is clicked
+
+                        # Wire selected
                         def wire_selected():
                             global adding_wire
                             adding_wire = True
                             return True
-                        def input_selected():
-                            global adding_element
-                            adding_element = 0
-                            return True
-                        def light_selected():
-                            global adding_element
-                            adding_element = 1
-                            return True
-                        def or_selected():
-                            global adding_element
-                            adding_element = 2
-                            return True
-                        def and_selected():
-                            global adding_element
-                            adding_element = 3
-                            return True
-                        def not_selected():
-                            global adding_element
-                            adding_element = 4
-                            return True
-                        menu = Menu(screen, mos_pos, ["Wire", "Input", "Light", "Or", "And", "Not"], [wire_selected, input_selected, light_selected, or_selected, and_selected, not_selected])
+                        selected_functions.append(wire_selected)
+
+                        # Element selected
+                        for i in range(len(element_types)):
+                            def element_selected_function(i):
+                                global adding_element
+                                adding_element = i
+                                return True
+                            selected_functions.append(lambda i=i: element_selected_function(i))
+                        menu = Menu(screen, mos_pos, ["Wire"] + element_names, selected_functions)
                         menus.append(menu)
 
                     # Close menus if clicked outside of them
