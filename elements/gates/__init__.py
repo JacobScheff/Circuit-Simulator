@@ -3,4 +3,5 @@ from .nor_gate import NorGate
 from .and_gate import AndGate
 from .nand_gate import NandGate
 from .xor_gate import XorGate
+from .xnor_gate import XnorGate
 from .not_gate import NotGate
