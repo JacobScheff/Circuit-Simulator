@@ -4,21 +4,24 @@ from config import *
 from menu import Menu
 from elements.element import Element
 
-class NorGate(Element):
+class NandGate(Element):
     def __init__(self, screen, pos):
         super().__init__(screen, pos)
-        
-        self.wire_connectors = [((-NOR_GATE_IMAGE.get_width() // 6, -NOR_GATE_IMAGE.get_height() // 5), True), ((-NOR_GATE_IMAGE.get_width() // 6, NOR_GATE_IMAGE.get_height() // 5), True), ((NOR_GATE_IMAGE.get_width() // 4, 0), False)] # (pos, is_input)
+
+        self.wire_connectors = [((-NAND_GATE_IMAGE.get_width() // 6, -NAND_GATE_IMAGE.get_height() // 5), True), ((-NAND_GATE_IMAGE.get_width() // 6, NAND_GATE_IMAGE.get_height() // 5), True), ((NAND_GATE_IMAGE.get_width() // 4, 0), False)] # (pos, is_input)
 
     def draw(self):
-        # Draw NOR_GATE_IMAGE
-        self.screen.blit(NOR_GATE_IMAGE if self.state else NOR_GATE_OFF_IMAGE, (self.pos[0] - NOR_GATE_IMAGE.get_width() // 2, self.pos[1] - NOR_GATE_IMAGE.get_height() // 2))
+        # Draw NAND_GATE_IMAGE
+        self.screen.blit(NAND_GATE_IMAGE if self.state else NAND_GATE_OFF_IMAGE, (self.pos[0] - NAND_GATE_IMAGE.get_width() // 2, self.pos[1] - NAND_GATE_IMAGE.get_height() // 2))
 
         # Draw the wire connectors
         self.draw_wire_connectors()
 
     def update(self):
         self.state = 1 # Reset the state of the element
+
+        first_input = False
+        second_input = False
         
         # Update the state of the element based on the input elements
         for wire in self.input_wires:
@@ -28,10 +31,16 @@ class NorGate(Element):
             if not self.wire_connectors[connector_index][1]:
                 continue
 
-            # If the wire is active, set the element's state to False
-            if wire.state:
-                self.state = 0
-                return
+            # If the wire is active, set the corresponding input to True
+            if wire.state and connector_index == 0:
+                first_input = True
+            elif wire.state and connector_index == 1:
+                second_input = True
+
+        # If both inputs are True, set the element's state to 0
+        if first_input and second_input:
+            self.state = 0
+            return
 
     # Return True if the element was clicked
     def handle_click(self, mouse_pos):
@@ -49,5 +58,5 @@ class NorGate(Element):
             return menu
         
     def create_new_element(self, mouse_pos):
-        new_element = NorGate(self.screen, mouse_pos)
+        new_element = NandGate(self.screen, mouse_pos)
         return new_element
