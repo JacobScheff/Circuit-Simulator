@@ -15,8 +15,20 @@ LIGHT_RADIUS = 30 # Radius of the light bulb
 OR_GATE_IMAGE = pygame.image.load("symbols/or_gate.tiff")
 OR_GATE_OFF_IMAGE = pygame.image.load("symbols/or_gate.tiff").copy()
 
+NOR_GATE_IMAGE = pygame.image.load("symbols/nor_gate.tiff")
+NOR_GATE_OFF_IMAGE = pygame.image.load("symbols/nor_gate.tiff").copy()
+
 AND_GATE_IMAGE = pygame.image.load("symbols/and_gate.tiff")
 AND_GATE_OFF_IMAGE = pygame.image.load("symbols/and_gate.tiff").copy()
+
+NAND_GATE_IMAGE = pygame.image.load("symbols/nand_gate.tiff")
+NAND_GATE_OFF_IMAGE = pygame.image.load("symbols/nand_gate.tiff").copy()
+
+XOR_GATE_IMAGE = pygame.image.load("symbols/xor_gate.tiff")
+XOR_GATE_OFF_IMAGE = pygame.image.load("symbols/xor_gate.tiff").copy()
+
+XNOR_GATE_IMAGE = pygame.image.load("symbols/xor_gate.tiff")
+XNOR_GATE_OFF_IMAGE = pygame.image.load("symbols/xnor_gate.tiff").copy()
 
 NOT_GATE_IMAGE = pygame.image.load("symbols/not_gate.tiff")
 NOT_GATE_OFF_IMAGE = pygame.image.load("symbols/not_gate.tiff").copy()
