@@ -28,8 +28,8 @@ wires = []
 
 new_element_button = NewElementButton(screen, (30, 30), 20, 10)
 
-element_types = [Input, Light, OrGate, AndGate, NotGate]
-element_names = ["Input", "Light", "Or", "And", "Not"]
+element_types = [Input, Light, OrGate, AndGate, NotGate, NorGate]
+element_names = ["Input", "Light", "Or", "And", "Not", "Nor"]
 elements = [[] for _ in range(len(element_types))]
 sample_elements = [element(screen, (0, 0)) for element in element_types]
 adding_element = -1 # -1 means no adding element selected, >0 is index of sample_elements
