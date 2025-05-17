@@ -38,12 +38,16 @@ class NotGate(Element):
 
     # Return True if the element was clicked
     def handle_click(self, mouse_pos):
-        # TODO
+        # Check if the mouse is over the element
+        image_rect = NOT_GATE_IMAGE.get_rect(center=(self.pos[0], self.pos[1]))
+        if image_rect.collidepoint(mouse_pos):
+            return True
+
         return False
 
     def handle_menu_create(self, mouse_pos):
         # Check if the or gate is clicked
-        if False: # TODO: Check if clicked
+        if self.handle_click(mouse_pos):
             def delete_input():
                 self.deleted = True
                 return True # Close the menu after deleting the input
