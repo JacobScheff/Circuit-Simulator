@@ -25,16 +25,23 @@ function starts_width_date(input){
 }
 
 let result = []
+let amounts = []
 for (let i = 0; i < lines.length; i++) {
     line_output = ""
 
-    // If the line starts with a date, we need to start a new line with the date, Citizen (for bank row), amount, then description (only keep the stuff after the "- ")
+    // If the line starts with a date, we need to start a new line with the date, Citizen (for bank row), description (only keep the stuff after the "- "), then amount
     if (starts_width_date(lines[i])){
+        // Add the amount for the previous line
+        if (result.length > 0){
+            result[result.length - 1] += ", " + amounts[amounts.length - 1]
+        }
+
+        // Start the new line
         line_split = lines[i].split(' ')
-        line_output = line_split[0] + ", Citizen, " + line_split[1] + ", " // + description (may span multiple lines or spaces)
-        // for(i = 2; i < line_split.length; i++){
-        //     line_output += line_split[i] + " "
-        // }
+
+        amounts.push(line_split[1]) // Add the amount to the amounts array
+        line_output = line_split[0] + ", Citizen, " // + description (may span multiple lines or spaces)
+
         line_output += line_split.slice(2).join(' ').split('- ')[1] // + description (may span multiple lines or spaces), Only keeps the stuff after the "- "
 
         result.push(line_output)
@@ -42,6 +49,11 @@ for (let i = 0; i < lines.length; i++) {
     else {
         result[result.length - 1] += lines[i]
     }
+}
+
+// Add the amount for the last line
+if (result.length > 0){
+    result[result.length - 1] += ", " + amounts[amounts.length - 1]
 }
 
 // Remove \r characters
