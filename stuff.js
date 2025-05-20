@@ -33,14 +33,14 @@ for (let i = 0; i < lines.length; i++) {
     if (starts_width_date(lines[i])){
         // Add the amount for the previous line
         if (result.length > 0){
-            result[result.length - 1] += ", " + amounts[amounts.length - 1]
+            result[result.length - 1] += "; " + amounts[amounts.length - 1]
         }
 
         // Start the new line
         line_split = lines[i].split(' ')
 
         amounts.push(line_split[1]) // Add the amount to the amounts array
-        line_output = line_split[0] + ", Citizen, " // + description (may span multiple lines or spaces)
+        line_output = line_split[0] + "; Citizen; "
 
         line_output += line_split.slice(2).join(' ').split('- ')[1] // + description (may span multiple lines or spaces), Only keeps the stuff after the "- "
 
@@ -53,7 +53,7 @@ for (let i = 0; i < lines.length; i++) {
 
 // Add the amount for the last line
 if (result.length > 0){
-    result[result.length - 1] += ", " + amounts[amounts.length - 1]
+    result[result.length - 1] += "; " + amounts[amounts.length - 1]
 }
 
 // Remove \r characters
