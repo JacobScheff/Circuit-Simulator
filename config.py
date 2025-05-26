@@ -32,3 +32,6 @@ XNOR_GATE_OFF_IMAGE = pygame.image.load("symbols/xnor_gate.tiff").copy()
 
 NOT_GATE_IMAGE = pygame.image.load("symbols/not_gate.tiff")
 NOT_GATE_OFF_IMAGE = pygame.image.load("symbols/not_gate.tiff").copy()
+
+def lerp(start, end, t):
+    return start + (end - start) * t

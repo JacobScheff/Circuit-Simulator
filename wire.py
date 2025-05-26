@@ -10,7 +10,8 @@ class Wire:
         self.initial_index = initial_index
         self.ending_element = ending_element
         self.ending_index = ending_index
-        self.state = state
+        # Unlike gates/inputs, a wire can contain many different states. It can have sections of on and off.
+        self.state = [] # (t_initial, t_enging), Stores time intervals where the wire is on
         self.deleted = False
 
     def draw(self):
@@ -19,8 +20,25 @@ class Wire:
         intial_connector_pos = self.initial_element.wire_connectors[self.initial_index][0]
         ending_element_pos = self.ending_element.pos
         ending_connector_pos = self.ending_element.wire_connectors[self.ending_index][0]
-        pygame.draw.line(self.screen, WIRE_ON_COLOR if self.state else WIRE_OFF_COLOR, (initial_element_pos[0] + intial_connector_pos[0], initial_element_pos[1] + intial_connector_pos[1]), (ending_element_pos[0] + ending_connector_pos[0], ending_element_pos[1] + ending_connector_pos[1]), WIRE_WIDTH)
 
+        line_start = (initial_element_pos[0] + intial_connector_pos[0], initial_element_pos[1] + intial_connector_pos[1])
+        line_end = (ending_element_pos[0] + ending_connector_pos[0], ending_element_pos[1] + ending_connector_pos[1])
+
+        # Draw the entire wire as off
+        pygame.draw.line(self.screen, WIRE_OFF_COLOR if self.state else WIRE_OFF_COLOR, line_start, line_end, WIRE_WIDTH)
+
+        # Draw the on sections of the wire
+        if self.state:
+            for t_initial, t_ending in self.state:
+                # Calculate the position of the wire at the given time
+                x1 = lerp(line_start[0], line_end[0], t_initial)
+                y1 = lerp(line_start[1], line_end[1], t_initial)
+                x2 = lerp(line_start[0], line_end[0], t_ending)
+                y2 = lerp(line_start[1], line_end[1], t_ending)
+
+                # Draw the on section of the wire
+                pygame.draw.line(self.screen, WIRE_ON_COLOR, (x1, y1), (x2, y2), WIRE_WIDTH)
+        
     # Update the wire's state
     def update(self):
         starting_end_state = self.initial_element.state and not self.initial_element.wire_connectors[self.initial_index][1] # State and not is_input
