@@ -29,7 +29,7 @@ class OrGate(Element):
                 continue
 
             # If the wire is active, set the element's state to True
-            if wire.state:
+            if wire.get_state(self):
                 self.state = True
                 return
 
