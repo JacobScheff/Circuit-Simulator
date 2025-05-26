@@ -4,14 +4,14 @@ from config import *
 from menu import Menu
 
 class Wire:
-    def __init__(self, screen, initial_element, initial_index, ending_element, ending_index, state = 0):
+    def __init__(self, screen, initial_element, initial_index, ending_element, ending_index):
         self.screen = screen
         self.initial_element = initial_element
         self.initial_index = initial_index
         self.ending_element = ending_element
         self.ending_index = ending_index
         # Unlike gates/inputs, a wire can contain many different states. It can have sections of on and off.
-        self.state = [] # (t_initial, t_enging), Stores time intervals where the wire is on
+        self.state = [] # (t_initial, t_enging, t-dir), Stores time intervals where the wire is on. t-dir is either 1 or -1, indicating the direction of the current flow.
         self.deleted = False
 
     def draw(self):
@@ -25,11 +25,11 @@ class Wire:
         line_end = (ending_element_pos[0] + ending_connector_pos[0], ending_element_pos[1] + ending_connector_pos[1])
 
         # Draw the entire wire as off
-        pygame.draw.line(self.screen, WIRE_OFF_COLOR if self.state else WIRE_OFF_COLOR, line_start, line_end, WIRE_WIDTH)
+        pygame.draw.line(self.screen, WIRE_OFF_COLOR, line_start, line_end, WIRE_WIDTH)
 
         # Draw the on sections of the wire
         if self.state:
-            for t_initial, t_ending in self.state:
+            for t_initial, t_ending, _ in self.state:
                 # Calculate the position of the wire at the given time
                 x1 = lerp(line_start[0], line_end[0], t_initial)
                 y1 = lerp(line_start[1], line_end[1], t_initial)
@@ -44,7 +44,22 @@ class Wire:
         starting_end_state = self.initial_element.state and not self.initial_element.wire_connectors[self.initial_index][1] # State and not is_input
         ending_end_state = self.ending_element.state and not self.ending_element.wire_connectors[self.ending_index][1] # State and not is_input
 
-        self.state = starting_end_state or ending_end_state
+        # TODO: State should store t-direction to indicate the direction of the current flow
+
+        # Flow the current (move it along the wire)
+        for i in range(len(self.state)):
+            t_initial, t_ending, t_dir = self.state[i]
+            # Move the current along the wire
+            self.state[i] = (t_initial + WIRE_CURRENT, t_ending + WIRE_CURRENT, t_dir)
+
+        # Create the interval for the wire if the end is on
+        if starting_end_state:
+            self.state.insert(0, (0, WIRE_CURRENT, 1))
+        if ending_end_state:
+            self.state.append((1 - WIRE_CURRENT, 1, -1))
+
+        # Remove intervals that are out of bounds
+        self.state = [(t_initial, t_ending, t_dir) for t_initial, t_ending, t_dir in self.state if t_initial < 1 or t_ending > 0]
 
     # Return True if the wire was clicked
     def handle_click(self, mouse_pos):
