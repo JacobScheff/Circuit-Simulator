@@ -13,6 +13,7 @@ clock = pygame.time.Clock()
 running = True
 adding_wire = False
 wire_connectors_selected = []
+paused = False
 
 # Create gate off images
 OR_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
@@ -98,6 +99,10 @@ while running:
                 # If the new element key is pressed, no element or wire is being added, and the create new element menu isn't visible, then create a new element menu
                 if adding_element == -1 and not adding_wire and not new_element_menu_visible:
                     create_new_element_menu()
+            # Space key pressed, toggle pause
+            elif event.key == pygame.K_SPACE:
+                paused = not paused
+            # Escape key pressed, close all menus
             elif event.key == pygame.K_ESCAPE:
                 menus.clear()
                 adding_element = -1
@@ -228,7 +233,7 @@ while running:
     
     # Update the wires' states
     for wire in wires:
-        wire.update()
+        wire.update(paused)
 
     # Update the elements' states
     for elements_list in elements:

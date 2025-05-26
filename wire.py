@@ -40,17 +40,18 @@ class Wire:
                 pygame.draw.line(self.screen, WIRE_ON_COLOR, (x1, y1), (x2, y2), WIRE_WIDTH)
         
     # Update the wire's state
-    def update(self):
+    def update(self, paused):
         starting_end_state = self.initial_element.state and not self.initial_element.wire_connectors[self.initial_index][1] # State and not is_input
         ending_end_state = self.ending_element.state and not self.ending_element.wire_connectors[self.ending_index][1] # State and not is_input
 
         # TODO: State should store t-direction to indicate the direction of the current flow
 
-        # Flow the current (move it along the wire)
-        for i in range(len(self.state)):
-            t_initial, t_ending, t_dir = self.state[i]
-            # Move the current along the wire
-            self.state[i] = (t_initial + WIRE_CURRENT * t_dir, t_ending + WIRE_CURRENT * t_dir, t_dir)
+        if not paused:
+            # Flow the current (move it along the wire)
+            for i in range(len(self.state)):
+                t_initial, t_ending, t_dir = self.state[i]
+                # Move the current along the wire
+                self.state[i] = (t_initial + WIRE_CURRENT * t_dir, t_ending + WIRE_CURRENT * t_dir, t_dir)
 
         # Create the interval for the wire if the end is on
         if starting_end_state:
