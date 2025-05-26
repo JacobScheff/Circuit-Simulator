@@ -61,6 +61,19 @@ class Wire:
         # Remove intervals that are out of bounds
         self.state = [(t_initial, t_ending, t_dir) for t_initial, t_ending, t_dir in self.state if t_initial < 1 and t_ending > 0]
 
+    def get_state(self, element_checking_state):
+        # Determine which end of the wire to check the state for
+        if self.initial_element == element_checking_state:
+            # If the wire contains an interval with 0, the initial element is on
+            for t_initial, t_ending, _ in self.state:
+                if t_initial <= 0 <= t_ending:
+                    return True
+        elif self.ending_element == element_checking_state:
+            # If the wire contains an interval with 1, the ending element is on
+            for t_initial, t_ending, _ in self.state:
+                if t_initial <= 1 <= t_ending:
+                    return True
+
     # Return True if the wire was clicked
     def handle_click(self, mouse_pos):
         # Check if the mouse is close to the wire

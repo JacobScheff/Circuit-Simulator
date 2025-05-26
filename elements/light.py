@@ -30,7 +30,7 @@ class Light(Element):
                 continue
 
             # If the wire is active, set the light bulb's state to True
-            if wire.state:
+            if wire.get_state(self):
                 self.state = True
                 return
 
