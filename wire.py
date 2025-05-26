@@ -44,20 +44,31 @@ class Wire:
         starting_end_state = self.initial_element.state and not self.initial_element.wire_connectors[self.initial_index][1] # State and not is_input
         ending_end_state = self.ending_element.state and not self.ending_element.wire_connectors[self.ending_index][1] # State and not is_input
 
-        # TODO: State should store t-direction to indicate the direction of the current flow
+        # Calculate the wire length
+        initial_element_pos = self.initial_element.pos
+        intial_connector_pos = self.initial_element.wire_connectors[self.initial_index][0]
+        ending_element_pos = self.ending_element.pos
+        ending_connector_pos = self.ending_element.wire_connectors[self.ending_index][0]
+        line_start = (initial_element_pos[0] + intial_connector_pos[0], initial_element_pos[1] + intial_connector_pos[1])
+        line_end = (ending_element_pos[0] + ending_connector_pos[0], ending_element_pos[1] + ending_connector_pos[1])
+        wire_length = math.hypot(line_end[0] - line_start[0], line_end[1] - line_start[1])
+    
+        # Normalize the current flow based on the wire length
+        delta_t = WIRE_CURRENT / wire_length
 
         if not paused:
             # Flow the current (move it along the wire)
             for i in range(len(self.state)):
                 t_initial, t_ending, t_dir = self.state[i]
+
                 # Move the current along the wire
-                self.state[i] = (t_initial + WIRE_CURRENT * t_dir, t_ending + WIRE_CURRENT * t_dir, t_dir)
+                self.state[i] = (t_initial + delta_t * t_dir, t_ending + delta_t * t_dir, t_dir)
 
         # Create the interval for the wire if the end is on
         if starting_end_state:
-            self.state.insert(0, (0, WIRE_CURRENT, 1))
+            self.state.insert(0, (0, delta_t, 1))
         if ending_end_state:
-            self.state.append((1 - WIRE_CURRENT, 1, -1))
+            self.state.append((1 - delta_t, 1, -1))
 
         # Remove intervals that are out of bounds
         self.state = [(t_initial, t_ending, t_dir) for t_initial, t_ending, t_dir in self.state if t_initial < 1 and t_ending > 0]

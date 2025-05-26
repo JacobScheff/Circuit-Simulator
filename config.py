@@ -8,7 +8,7 @@ WIRE_WIDTH = 5 # Width of the wire
 WIRE_CONNECOR_RADIUS = 5 # Radius of the wire connector
 WIRE_ON_COLOR = (255, 255, 255) # Color of the wire when on
 WIRE_OFF_COLOR = (100, 100, 100) # Color of the wire when off
-WIRE_CURRENT = 0.02 # How fast the current flows through the wire
+WIRE_CURRENT = 2 # How fast the current flows through the wire
 
 LIGHT_RADIUS = 30 # Radius of the light bulb
 
