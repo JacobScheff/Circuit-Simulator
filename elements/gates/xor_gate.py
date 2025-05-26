@@ -30,9 +30,10 @@ class XorGate(Element):
                 continue
 
             # If the wire is active, set the element's state to True
-            if wire.state and connector_index == 0:
+            wire_state = wire.get_state(self)
+            if wire_state and connector_index == 0:
                 first_input = True
-            elif wire.state and connector_index == 1:
+            elif wire_state and connector_index == 1:
                 second_input = True
 
         # If both inputs are the same, set the element's state to 0

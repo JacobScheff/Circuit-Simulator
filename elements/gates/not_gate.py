@@ -29,7 +29,7 @@ class NotGate(Element):
                 continue
 
             # If the wire is active, set the not gate's output to False
-            if wire.state:
+            if wire.get_state(self):
                 self.state = 0
                 return
             

@@ -29,7 +29,7 @@ class NorGate(Element):
                 continue
 
             # If the wire is active, set the element's state to False
-            if wire.state:
+            if wire.get_state(self):
                 self.state = 0
                 return
 

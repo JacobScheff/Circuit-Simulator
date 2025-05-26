@@ -32,9 +32,10 @@ class NandGate(Element):
                 continue
 
             # If the wire is active, set the corresponding input to True
-            if wire.state and connector_index == 0:
+            wire_state = wire.get_state(self)
+            if wire_state and connector_index == 0:
                 first_input = True
-            elif wire.state and connector_index == 1:
+            elif wire_state and connector_index == 1:
                 second_input = True
 
         # If both inputs are True, set the element's state to 0
