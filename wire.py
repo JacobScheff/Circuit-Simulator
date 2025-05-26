@@ -50,7 +50,7 @@ class Wire:
         for i in range(len(self.state)):
             t_initial, t_ending, t_dir = self.state[i]
             # Move the current along the wire
-            self.state[i] = (t_initial + WIRE_CURRENT, t_ending + WIRE_CURRENT, t_dir)
+            self.state[i] = (t_initial + WIRE_CURRENT * t_dir, t_ending + WIRE_CURRENT * t_dir, t_dir)
 
         # Create the interval for the wire if the end is on
         if starting_end_state:
@@ -59,7 +59,7 @@ class Wire:
             self.state.append((1 - WIRE_CURRENT, 1, -1))
 
         # Remove intervals that are out of bounds
-        self.state = [(t_initial, t_ending, t_dir) for t_initial, t_ending, t_dir in self.state if t_initial < 1 or t_ending > 0]
+        self.state = [(t_initial, t_ending, t_dir) for t_initial, t_ending, t_dir in self.state if t_initial < 1 and t_ending > 0]
 
     # Return True if the wire was clicked
     def handle_click(self, mouse_pos):
