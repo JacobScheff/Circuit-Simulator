@@ -6,7 +6,7 @@ from wire import *
 from elements import *
 
 class Simulation:
-    def __init__(self, screen, element_types, element_names):
+    def __init__(self, screen, element_types, element_names, num_inputs):
         self.screen = screen
 
         self.menus = [] # List of menus that are currently open
@@ -25,6 +25,7 @@ class Simulation:
         self.sample_elements = [element(screen, (0, 0)) for element in element_types]
         self.element_types = element_types
         self.element_names = element_names
+        self.inputs = [Input(screen, (INPUT_SIZE[0] / 2, screen.get_height() / (num_inputs + 1) * (i + 1))) for i in range(num_inputs)] # List of inputs for each element type
 
     # Returns the list that the element belongs to
     def element_to_list(self, element):
@@ -117,6 +118,11 @@ class Simulation:
                                 # If handle_click returns True, close the menu
                                 something_clicked = element.handle_click(mos_pos) or something_clicked
 
+                        # Handle inputs
+                        for input_element in self.inputs:
+                            # If handle_click returns True, close the menu
+                            something_clicked = input_element.handle_click(mos_pos) or something_clicked
+
                         # Handle new element button
                         if self.new_element_button.collidepoint(mos_pos):
                             self.create_new_element_menu()
@@ -181,6 +187,10 @@ class Simulation:
                             for element in elements_list:
                                 check_wire_connects(element)
 
+                        # Check if the mouse is over the wire connector of any input
+                        for input_element in self.inputs:
+                            check_wire_connects(input_element)
+
                         if self.wire_connected and len(self.wire_connectors_selected) % 2 == 0:
                             self.wires.append(Wire(self.screen, self.wire_connectors_selected[-2][0], self.wire_connectors_selected[-2][1], self.wire_connectors_selected[-1][0], self.wire_connectors_selected[-1][1]))
                             self.adding_wire = False
@@ -232,6 +242,10 @@ class Simulation:
         for elements_list in self.elements:
             for element in elements_list:
                 element.draw()
+
+        # Draw the inputs
+        for input_element in self.inputs:
+            input_element.draw()
 
         # Draw the selected wire connectors
         if len(self.wire_connectors_selected) % 2 == 1:

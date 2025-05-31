@@ -8,9 +8,8 @@ class Input(Element):
     def __init__(self, screen, pos):
         super().__init__(screen, pos)
 
-        size = (50, 20)
-        self.rect = pygame.Rect(pos[0] - size[0] / 2, pos[1] - size[1] / 2, size[0], size[1])
-        self.wire_connectors = [((size[0] / 2, 0), False)] # (pos, is_input)
+        self.rect = pygame.Rect(pos[0] - INPUT_SIZE[0] / 2, pos[1] - INPUT_SIZE[1] / 2, INPUT_SIZE[0], INPUT_SIZE[1])
+        self.wire_connectors = [((INPUT_SIZE[0] / 2, 0), False)] # (pos, is_input)
 
     def draw(self):
         # Draw the input box
@@ -46,14 +45,7 @@ class Input(Element):
         return False
 
     def handle_menu_create(self, mouse_pos):
-        # Check if the input box is clicked
-        if self.rect.collidepoint(mouse_pos):
-            def delete_input():
-                self.deleted = True
-                return True # Close the menu after deleting the input
-            
-            menu = Menu(self.screen, mouse_pos, ["Delete"], [delete_input])
-            return menu
+        return # Inputs should not be deletable
         
     def create_new_element(self, mouse_pos):
         new_element = Input(self.screen, mouse_pos)

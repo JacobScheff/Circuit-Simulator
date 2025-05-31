@@ -15,8 +15,8 @@ running = True
 paused = False
 
 # List of all element types and their names for the menu
-element_types = [Input, Light, OrGate, AndGate, XorGate, NotGate, NorGate, NandGate, XnorGate]
-element_names = ["Input", "Light", "Or", "And", "Xor", "Not", "Nor", "Nand", "Xnor"]
+element_types = [Light, OrGate, AndGate, XorGate, NotGate, NorGate, NandGate, XnorGate]
+element_names = ["Light", "Or", "And", "Xor", "Not", "Nor", "Nand", "Xnor"]
 
 # Create gate off images
 OR_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
@@ -27,7 +27,7 @@ XOR_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
 XNOR_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
 NOT_GATE_OFF_IMAGE.fill((80, 80, 80, 255), None, pygame.BLEND_RGBA_MULT)
 
-main_simulation = Simulation(screen, element_types, element_names) # The main, displayed simulation
+main_simulation = Simulation(screen, element_types, element_names, 4) # The main, displayed simulation
 running_simulations = [] # The small undisplayed simulations that are running in the background
 
 while running:

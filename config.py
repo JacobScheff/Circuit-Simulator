@@ -12,6 +12,8 @@ WIRE_CURRENT = 2 # How fast the current flows through the wire
 
 LIGHT_RADIUS = 30 # Radius of the light bulb
 
+INPUT_SIZE = (50, 20) # Size of the input box
+
 ### --- Symbols --- ###
 OR_GATE_IMAGE = pygame.image.load("symbols/or_gate.tiff")
 OR_GATE_OFF_IMAGE = pygame.image.load("symbols/or_gate.tiff").copy()
