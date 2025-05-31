@@ -39,7 +39,7 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_h:
                 # Ask the user if they
-                save_menu(clock, screen)
+                save_menu(clock, screen, main_simulation)
 
     main_simulation.tick()
     main_simulation.render()

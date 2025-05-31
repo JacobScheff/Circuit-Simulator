@@ -1,9 +1,10 @@
 import pygame
 import math
+import pickle
 from config import *
 
 # Renders and operates the save menu, which allows the user to save the current simulation
-def save_menu(clock, screen):
+def save_menu(clock, screen, main_simulation):
     position = (screen.get_width() // 2, screen.get_height() // 2)
     background_color = (120, 120, 120)
     size = (600, 400)
@@ -106,7 +107,8 @@ def save_menu(clock, screen):
         if save_button_hovered and pygame.mouse.get_pressed()[0]:
             if input_text:
                 # Here you would save the simulation with the name in input_text
-                print(f"Saving simulation as '{input_text}'")
+                with open(f"{input_text}.sim", "wb") as f:
+                    pickle.dump(main_simulation, f)
                 saving_menu_visible = False
 
         pygame.display.flip()
