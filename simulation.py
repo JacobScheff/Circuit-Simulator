@@ -71,18 +71,18 @@ class Simulation:
         shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
 
         # Get the mouse position
-        mos_pos = pygame.mouse.get_pos()
+        self.mos_pos = pygame.mouse.get_pos()
 
         # If shift is held down, snap the mouse position to the grid
         if shift:
-            mos_pos = (math.floor(mos_pos[0] / GRID_SIZE) * GRID_SIZE, math.floor(mos_pos[1] / GRID_SIZE) * GRID_SIZE)
+            self.mos_pos = (math.floor(self.mos_pos[0] / GRID_SIZE) * GRID_SIZE, math.floor(self.mos_pos[1] / GRID_SIZE) * GRID_SIZE)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
             if event.type == pygame.KEYDOWN:
-                # Escape key pressed, close all menus
+                # W key pressed, create new element menu
                 if event.key == pygame.K_w:
                     # If the new element key is pressed, no element or wire is being added, and the create new element menu isn't visible, then create a new element menu
                     if self.adding_element == -1 and not self.adding_wire and not self.new_element_menu_visible:
@@ -93,7 +93,7 @@ class Simulation:
                 # Escape key pressed, close all menus
                 elif event.key == pygame.K_ESCAPE:
                     self.menus.clear()
-                    adding_element = -1
+                    self.adding_element = -1
                     self.adding_wire = False
                     # If an element is selcted for wire connection and second isn't selected, remove the first one
                     if len(self.wire_connectors_selected) % 2 == 1:
@@ -108,7 +108,7 @@ class Simulation:
                         # Handle menu
                         for menu in self.menus:
                             # If handle_click returns True, close the menu
-                            if menu.handle_click(mos_pos):
+                            if menu.handle_click(self.mos_pos):
                                 something_clicked = True
                                 menu.closing_callback()
                                 self.menus.remove(menu)
@@ -118,15 +118,15 @@ class Simulation:
                         for elements_list in self.elements:
                             for element in elements_list:
                                 # If handle_click returns True, close the menu
-                                something_clicked = element.handle_click(mos_pos) or something_clicked
+                                something_clicked = element.handle_click(self.mos_pos) or something_clicked
 
                         # Handle inputs
                         for input_element in self.inputs:
                             # If handle_click returns True, close the menu
-                            something_clicked = input_element.handle_click(mos_pos) or something_clicked
+                            something_clicked = input_element.handle_click(self.mos_pos) or something_clicked
 
                         # Handle new element button
-                        if self.new_element_button.collidepoint(mos_pos):
+                        if self.new_element_button.collidepoint(self.mos_pos):
                             self.create_new_element_menu()
 
                         # Close menus if clicked outside of them
@@ -135,7 +135,7 @@ class Simulation:
                         # If nothing was clicked, and adding_element is not -1, create a new element
                         if not something_clicked and self.adding_element >= 0:
                             # Create a new element
-                            new_element = self.sample_elements[self.adding_element].create_new_element(mos_pos)
+                            new_element = self.sample_elements[self.adding_element].create_new_element(self.mos_pos)
                             self.elements[self.adding_element].append(new_element)
 
                             # Reset adding_element
@@ -145,8 +145,8 @@ class Simulation:
                     elif event.button == 3:
                         # Handle wire
                         for wire in self.wires:
-                            if wire.handle_click(mos_pos):
-                                menu = wire.handle_menu_create(mos_pos)
+                            if wire.handle_click(self.mos_pos):
+                                menu = wire.handle_menu_create(self.mos_pos)
                                 if menu is not None:
                                     self.menus.append(menu)
                                 break
@@ -154,8 +154,8 @@ class Simulation:
                         # Handle elements
                         for elements_list in self.elements:
                             for element in elements_list:
-                                if element.handle_click(mos_pos):
-                                    menu = element.handle_menu_create(mos_pos)
+                                if element.handle_click(self.mos_pos):
+                                    menu = element.handle_menu_create(self.mos_pos)
                                     if menu is not None:
                                         self.menus.append(menu)
                                     break
@@ -180,7 +180,7 @@ class Simulation:
                             # Determine if any wires are connected
                             connectors = element.wire_connectors
                             for i in range(len(connectors)):
-                                if not self.wire_connected and math.hypot(element.pos[0] + connectors[i][0][0] - mos_pos[0], element.pos[1] + connectors[i][0][1] - mos_pos[1]) < WIRE_CONNECOR_RADIUS:
+                                if not self.wire_connected and math.hypot(element.pos[0] + connectors[i][0][0] - self.mos_pos[0], element.pos[1] + connectors[i][0][1] - self.mos_pos[1]) < WIRE_CONNECOR_RADIUS:
                                     self.wire_connected = True
                                     self.wire_connectors_selected.append((element, i))
 
@@ -236,6 +236,8 @@ class Simulation:
             for element in elements_list:
                 element.update()
 
+    # Render the simulation state to the screen
+    def render(self):
         # Draw the wires
         for wire in self.wires:
             wire.draw()
@@ -265,19 +267,15 @@ class Simulation:
         # Draw the selected element at mos_pos
         if self.adding_element >= 0:
             element = self.sample_elements[self.adding_element]
-            element.set_pos(mos_pos)
+            element.set_pos(self.mos_pos)
             element.draw()
 
         # Draw a wire icon at mos_pos if adding a wire and no element is selected yet
         if self.adding_wire and len(self.wire_connectors_selected) % 2 == 0:
-            pygame.draw.rect(self.screen, (255, 255, 255), (mos_pos[0] - WIRE_CONNECOR_RADIUS / 2, mos_pos[1] - WIRE_CONNECOR_RADIUS / 2, WIRE_CONNECOR_RADIUS, WIRE_CONNECOR_RADIUS))
+            pygame.draw.rect(self.screen, (255, 255, 255), (self.mos_pos[0] - WIRE_CONNECOR_RADIUS / 2, self.mos_pos[1] - WIRE_CONNECOR_RADIUS / 2, WIRE_CONNECOR_RADIUS, WIRE_CONNECOR_RADIUS))
 
         # Draw a wire from selected element to mouse position if adding a wire and only first element is selected
         if self.adding_wire and len(self.wire_connectors_selected) % 2 == 1:
             last_connected_element_pos = self.wire_connectors_selected[-1][0].pos
             last_connected_connector_pos = self.wire_connectors_selected[-1][0].wire_connectors[self.wire_connectors_selected[-1][1]][0]
-            pygame.draw.line(self.screen, (255, 255, 255), (last_connected_element_pos[0] + last_connected_connector_pos[0], last_connected_element_pos[1] + last_connected_connector_pos[1]), mos_pos, WIRE_WIDTH)
-
-    # # Render the simulation state to the screen
-    # def render(self, screen):
-        
+            pygame.draw.line(self.screen, (255, 255, 255), (last_connected_element_pos[0] + last_connected_connector_pos[0], last_connected_element_pos[1] + last_connected_connector_pos[1]), self.mos_pos, WIRE_WIDTH)

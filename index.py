@@ -32,6 +32,9 @@ running_simulations = [] # The small undisplayed simulations that are running in
 
 while running:
     main_simulation.tick()
+    main_simulation.render()
+
+    # TODO: Make sure only main simulation has new_element menu
 
     pygame.display.flip()
     clock.tick(FPS)
