@@ -6,8 +6,12 @@ from wire import *
 from elements import *
 
 class Simulation:
-    def __init__(self, screen, element_types, element_names, num_inputs):
+    def __init__(self, screen, element_types, element_names, num_inputs, is_main):
         self.screen = screen
+        self.element_types = element_types
+        self.element_names = element_names
+        self.num_inputs = num_inputs # Number of inputs for this simulation
+        self.is_main = is_main # Whether this simulation is the main one displayed on the screen or a background one
 
         self.menus = [] # List of menus that are currently open
         self.wires = []
@@ -23,8 +27,6 @@ class Simulation:
 
         self.new_element_button = NewElementButton(screen, (30, 30), 20, 10)
         self.sample_elements = [element(screen, (0, 0)) for element in element_types]
-        self.element_types = element_types
-        self.element_names = element_names
         self.inputs = [Input(screen, (INPUT_SIZE[0] / 2, screen.get_height() / (num_inputs + 1) * (i + 1))) for i in range(num_inputs)] # List of inputs for each element type
 
     # Returns the list that the element belongs to
