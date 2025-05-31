@@ -33,7 +33,8 @@ running_simulations = [] # The small undisplayed simulations that are running in
 
 while running:
     # Check if H is pressed
-    for event in pygame.event.get():
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
@@ -41,7 +42,7 @@ while running:
                 # Ask the user if they
                 save_menu(clock, screen, main_simulation)
 
-    main_simulation.tick()
+    main_simulation.tick(events)
     main_simulation.render()
 
     # TODO: Make sure only main simulation has new_element menu

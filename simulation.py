@@ -66,7 +66,7 @@ class Simulation:
         self.new_element_menu_visible = True
     
     # Updates the simulation state by a single tick
-    def tick(self):
+    def tick(self, events):
         # Check if shift is held down
         shift = pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]
 
@@ -77,7 +77,7 @@ class Simulation:
         if shift:
             self.mos_pos = (math.floor(self.mos_pos[0] / GRID_SIZE) * GRID_SIZE, math.floor(self.mos_pos[1] / GRID_SIZE) * GRID_SIZE)
 
-        for event in pygame.event.get():
+        for event in events:
             if event.type == pygame.KEYDOWN:
                 # W key pressed, create new element menu
                 if event.key == pygame.K_w:
