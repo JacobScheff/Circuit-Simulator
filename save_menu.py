@@ -107,7 +107,7 @@ def save_menu(clock, screen, main_simulation):
         if save_button_hovered and pygame.mouse.get_pressed()[0]:
             if input_text:
                 # Here you would save the simulation with the name in input_text
-                with open(f"{input_text}.sim", "wb") as f:
+                with open(f"saves/{input_text}.sim", "wb") as f:
                     pickle.dump(main_simulation, f)
                 saving_menu_visible = False
 
