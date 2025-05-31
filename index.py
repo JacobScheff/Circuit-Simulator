@@ -31,6 +31,15 @@ main_simulation = Simulation(screen, element_types, element_names, 4, True) # Th
 running_simulations = [] # The small undisplayed simulations that are running in the background
 
 while running:
+    # Check if H is pressed
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_h:
+                # Ask the user if they
+                return # TODO
+
     main_simulation.tick()
     main_simulation.render()
 

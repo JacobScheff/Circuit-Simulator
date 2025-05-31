@@ -78,9 +78,6 @@ class Simulation:
             self.mos_pos = (math.floor(self.mos_pos[0] / GRID_SIZE) * GRID_SIZE, math.floor(self.mos_pos[1] / GRID_SIZE) * GRID_SIZE)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
             if event.type == pygame.KEYDOWN:
                 # W key pressed, create new element menu
                 if event.key == pygame.K_w:
