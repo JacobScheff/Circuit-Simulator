@@ -7,6 +7,7 @@ from new_element import *
 from wire import *
 from elements import *
 from save_menu import save_menu
+from load_menu import load_menu
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -39,8 +40,9 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_h:
-                # Ask the user if they
                 save_menu(clock, screen, main_simulation)
+            elif event.key == pygame.K_l:
+                load_menu(clock, screen)
 
     main_simulation.tick(events)
     main_simulation.render()
