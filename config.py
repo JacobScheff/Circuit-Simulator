@@ -3,6 +3,7 @@ import pygame
 SCREEN_SIZE = (1200, 600)
 GRID_SIZE = 25 # Grid size when grid is enabled
 FPS = 60
+SAVE_DIRECTORY = "saves" # Directory where saves are stored
 
 WIRE_WIDTH = 5 # Width of the wire
 WIRE_CONNECOR_RADIUS = 5 # Radius of the wire connector

@@ -108,7 +108,13 @@ def save_menu(clock, screen, main_simulation):
             if input_text:
                 # Here you would save the simulation with the name in input_text
                 with open(f"saves/{input_text}.sim", "wb") as f:
-                    pickle.dump(main_simulation, f)
+                    simulation_data = {
+                        'elements': main_simulation.elements,
+                        'wires': main_simulation.wires,
+                        "inputs": main_simulation.inputs,
+                        'paused': main_simulation.paused
+                    }
+                    pickle.dump(simulation_data, f)
                 saving_menu_visible = False
 
         pygame.display.flip()

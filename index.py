@@ -1,3 +1,4 @@
+import os
 import pygame
 import math
 from config import *
@@ -7,7 +8,6 @@ from new_element import *
 from wire import *
 from elements import *
 from save_menu import save_menu
-from load_menu import load_menu
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -41,13 +41,20 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_h:
                 save_menu(clock, screen, main_simulation)
-            elif event.key == pygame.K_l:
-                load_menu(clock, screen)
+            elif event.key == pygame.K_u: # Load a simulation as the main simulation
+                # Get a list of all files in saves
+                save_files = [f for f in os.listdir(SAVE_DIRECTORY) if f.endswith('.sim')]
+                print("Available saves:", save_files)
+                # load_menu = Menu(screen, (screen.get_width() // 2, screen.get_height() // 2), )
+            elif event.key == pygame.K_l: # Load a simulation as a background simulation
+                print("Loading a simulation as a background simulation...")
+                # TODO
 
     main_simulation.tick(events)
     main_simulation.render()
 
     # TODO: Make sure only main simulation has new_element menu
+    # TODO: Save doesn't work
 
     pygame.display.flip()
     clock.tick(FPS)
